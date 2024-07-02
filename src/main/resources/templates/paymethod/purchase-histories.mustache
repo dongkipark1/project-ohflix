@@ -74,6 +74,7 @@
                     <td>{{description}}</td>
                     <td>{{servicePeriod}}</td>
                     <td>{{paymethod}} : {{cardNumber}}</td>
+                    <td>{{#cardNumber}}{{cardNumber}}{{/cardNumber}}{{^cardNumber}}-{{/cardNumber}}</td>
                     <td>{{supplyValue}} (+{{vat}}원 부가세)</td>
                     <td>{{amount}}</td>
                 </tr>
