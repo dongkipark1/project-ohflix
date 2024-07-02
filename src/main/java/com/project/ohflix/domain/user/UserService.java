@@ -304,11 +304,11 @@ public class UserService {
 
         // 결제 내역 찾기
         PurchaseHistory purchaseHistory = purchaseHistoryRepository.findFirstByUserIdOrderByCreatedAtDesc(sessionUserId)
-                .orElseThrow(() -> new Exception404("결제 정보를 찾을 수 없습니다."));
+                .orElse(null);
 
         // 카드 정보 찾기
         CardInfo cardInfo = cardInfoRepository.findMainCardInfoByUserId(sessionUserId)
-                .orElseThrow(() -> new Exception404("카드 정보를 찾을 수 없습니다."));
+                .orElse(null);
 
         return new UserResponse.AccountMembershipInfoDTO(user, purchaseHistory, cardInfo);
     }

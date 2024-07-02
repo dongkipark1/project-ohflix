@@ -11,6 +11,8 @@ server:
     max-swallow-size: -1 # -1은 제한 없음을 의미합니다.
 
 spring:
+  config:
+    import: optional:file:.env[.properties]
   mustache:
     servlet:
       expose-session-attributes: true
