@@ -288,8 +288,16 @@ public class UserResponse {
             this.profileIconPath = user.getProfileIcon().getPath();
             this.membershipStartDate = user.getCreatedAt().toString(); // 예시 데이터
             this.membershipType = user.getIsSubscribe() ? "스탠다드" : "구독 안됨";
-            this.nextPaymentDate = extractEndDate(purchaseHistory.getServicePeriod());
-            this.cardLastFourDigits = cardInfo.getLastDigit();
+            if (purchaseHistory != null){
+                this.nextPaymentDate = extractEndDate(purchaseHistory.getServicePeriod());
+            } else {
+                this.nextPaymentDate = "";
+            }
+            if (cardInfo != null){
+                this.cardLastFourDigits = cardInfo.getLastDigit();
+            } else {
+                this.cardLastFourDigits = "";
+            }
         }
 
         private String extractEndDate(String servicePeriod) {
