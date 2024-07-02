@@ -52,4 +52,8 @@ public class PurchaseHistory {
         this.amount = amount;
         this.createdAt = createdAt;
     }
+
+    public String getCardNumber() {
+        return cardInfo != null ? cardInfo.getCardNumber() : "-";
+    }
 }

@@ -3,6 +3,7 @@ package com.project.ohflix.domain.purchaseHistory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.ohflix._core.config.KakaoPayConfig;
 import com.project.ohflix._core.error.exception.Exception404;
+import com.project.ohflix.domain._enums.Paymethod;
 import com.project.ohflix.domain.content.ContentRepository;
 import com.project.ohflix.domain.user.User;
 import com.project.ohflix.domain.user.UserRepository;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.sql.Timestamp;
@@ -137,7 +139,7 @@ public class PurchaseHistoryService {
 
     // 결제 승인
     public PurchaseHistoryResponse.KakaoPayApproveDTO approvePayment(int userId, String tid, String pgToken) {
-        String url = "https://open-api.kakaopay.com/v1/payment/approve";
+        String url = "https://kapi.kakao.com/v1/payment/approve";
 
         String cid = kakaoPayConfig.getCid();
         if (cid == null) {
@@ -146,62 +148,108 @@ public class PurchaseHistoryService {
         }
 
         logger.info("Approving payment with CID: {}", cid);
-        Map<String, Object> body = Map.of(
-                "cid", kakaoPayConfig.getCid(),
-                "tid", tid,
-                "partner_order_id", "order_id_" + userId,
-                "partner_user_id", String.valueOf(userId),
-                "pg_token", pgToken
-        );
 
-        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, kakaoPayHeaders);
-        ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.POST, entity, Map.class);
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("cid", cid);
+        body.add("tid", tid);
+        body.add("partner_order_id", "order_id_" + userId);
+        body.add("partner_user_id", String.valueOf(userId));
+        body.add("pg_token", pgToken);
 
-        // 결제 승인 정보를 DTO로 반환
-        Map<String, Object> responseBody = response.getBody();
-        Map<String, Object> amountMap = (Map<String, Object>) responseBody.get("amount");
-        Map<String, Object> cardInfoMap = (Map<String, Object>) responseBody.get("card_info");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.set("Authorization", "KakaoAK " + kakaoPayConfig.getAdminKey());
 
-        PurchaseHistoryResponse.KakaoPayApproveDTO.Amount amount = new PurchaseHistoryResponse.KakaoPayApproveDTO.Amount(
-                (Integer) amountMap.get("total"),
-                (Integer) amountMap.get("tax_free"),
-                (Integer) amountMap.get("vat"),
-                (Integer) amountMap.get("point"),
-                (Integer) amountMap.get("discount"),
-                (Integer) amountMap.get("green_deposit")
-        );
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(body, headers);
 
-        PurchaseHistoryResponse.KakaoPayApproveDTO.PaymentCardInfo cardInfo = new PurchaseHistoryResponse.KakaoPayApproveDTO.PaymentCardInfo(
-                (String) cardInfoMap.get("kakaopay_purchase_corp"),
-                (String) cardInfoMap.get("kakaopay_purchase_corp_code"),
-                (String) cardInfoMap.get("kakaopay_issuer_corp"),
-                (String) cardInfoMap.get("kakaopay_issuer_corp_code"),
-                (String) cardInfoMap.get("bin"),
-                (String) cardInfoMap.get("card_type"),
-                (String) cardInfoMap.get("install_month"),
-                (String) cardInfoMap.get("approved_id"),
-                (String) cardInfoMap.get("card_mid"),
-                (String) cardInfoMap.get("interest_free_install"),
-                (String) cardInfoMap.get("installment_type"),
-                (String) cardInfoMap.get("card_item_code")
-        );
+        try {
+            ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.POST, entity, Map.class);
 
-        return new PurchaseHistoryResponse.KakaoPayApproveDTO(
-                (String) responseBody.get("aid"),
-                (String) responseBody.get("tid"),
-                (String) responseBody.get("cid"),
-                (String) responseBody.get("sid"),
-                (String) responseBody.get("partner_order_id"),
-                (String) responseBody.get("partner_user_id"),
-                (String) responseBody.get("payment_method_type"),
-                amount,
-                cardInfo,
-                (String) responseBody.get("item_name"),
-                (String) responseBody.get("item_code"),
-                (Integer) responseBody.get("quantity"),
-                Timestamp.valueOf((String) responseBody.get("created_at")),
-                Timestamp.valueOf((String) responseBody.get("approved_at"))
-        );
+            if (response.getStatusCode() != HttpStatus.OK) {
+                logger.error("Failed to approve payment. Status code: {}, Response: {}", response.getStatusCode(), response.getBody());
+                throw new HttpClientErrorException(response.getStatusCode(), "Failed to approve payment");
+            }
+
+            logger.info("KakaoPay approve response: {}", response);
+
+            // 결제 승인 정보를 DTO로 반환
+            Map<String, Object> responseBody = response.getBody();
+            Map<String, Object> amountMap = (Map<String, Object>) responseBody.get("amount");
+            Map<String, Object> cardInfoMap = (Map<String, Object>) responseBody.get("card_info");
+
+            PurchaseHistoryResponse.KakaoPayApproveDTO.Amount amount = new PurchaseHistoryResponse.KakaoPayApproveDTO.Amount(
+                    (Integer) amountMap.get("total"),
+                    (Integer) amountMap.get("tax_free"),
+                    (Integer) amountMap.get("vat"),
+                    (Integer) amountMap.get("point"),
+                    (Integer) amountMap.get("discount"),
+                    (Integer) amountMap.get("green_deposit")
+            );
+
+            PurchaseHistoryResponse.KakaoPayApproveDTO.PaymentCardInfo cardInfo = null;
+            if (cardInfoMap != null) {
+                cardInfo = new PurchaseHistoryResponse.KakaoPayApproveDTO.PaymentCardInfo(
+                        (String) cardInfoMap.get("kakaopay_purchase_corp"),
+                        (String) cardInfoMap.get("kakaopay_purchase_corp_code"),
+                        (String) cardInfoMap.get("kakaopay_issuer_corp"),
+                        (String) cardInfoMap.get("kakaopay_issuer_corp_code"),
+                        (String) cardInfoMap.get("bin"),
+                        (String) cardInfoMap.get("card_type"),
+                        (String) cardInfoMap.get("install_month"),
+                        (String) cardInfoMap.get("approved_id"),
+                        (String) cardInfoMap.get("card_mid"),
+                        (String) cardInfoMap.get("interest_free_install"),
+                        (String) cardInfoMap.get("installment_type"),
+                        (String) cardInfoMap.get("card_item_code")
+                );
+            }
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+            LocalDateTime createdAt = LocalDateTime.parse((String) responseBody.get("created_at"), formatter);
+            LocalDateTime approvedAt = LocalDateTime.parse((String) responseBody.get("approved_at"), formatter);
+
+            PurchaseHistoryResponse.KakaoPayApproveDTO approveDTO = new PurchaseHistoryResponse.KakaoPayApproveDTO(
+                    (String) responseBody.get("aid"),
+                    (String) responseBody.get("tid"),
+                    (String) responseBody.get("cid"),
+                    (String) responseBody.get("sid"),
+                    (String) responseBody.get("partner_order_id"),
+                    (String) responseBody.get("partner_user_id"),
+                    (String) responseBody.get("payment_method_type"),
+                    amount,
+                    cardInfo,
+                    (String) responseBody.get("item_name"),
+                    (String) responseBody.get("item_code"),
+                    (Integer) responseBody.get("quantity"),
+                    Timestamp.valueOf(createdAt),
+                    Timestamp.valueOf(approvedAt)
+            );
+
+
+            return approveDTO;
+
+        } catch (HttpClientErrorException e) {
+            logger.error("HttpClientErrorException: Status code: {}, Response body: {}", e.getStatusCode(), e.getResponseBodyAsString());
+            throw e;
+        } catch (RestClientException e) {
+            logger.error("RestClientException: {}", e.getMessage());
+            throw e;
+        }
+    }
+
+    // 카카오페이 결제 정보 저장
+    @Transactional
+    public void savePurchaseHistory(int userId, PurchaseHistoryResponse.KakaoPayApproveDTO approveDTO) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new Exception404("User not found"));
+        PurchaseHistory purchaseHistory = PurchaseHistory.builder()
+                .user(user)
+                .description("스트리밍 서비스")
+                .servicePeriod(approveDTO.getCreatedAt().toString() + " - " + approveDTO.getApprovedAt().toString())
+                .paymethod(Paymethod.KAKAOPAY)
+                .amount(13500)
+                .createdAt(approveDTO.getApprovedAt())
+                .build();
+        purchaseHistoryRepository.save(purchaseHistory);
     }
 
     // 정기 결제 요청
@@ -216,7 +264,7 @@ public class PurchaseHistoryService {
                 "item_name", "정기결제",
                 "quantity", 1,
                 "total_amount", totalAmount,
-                "vat_amount", 900,
+                "vat_amount", 12150,
                 "tax_free_amount", 0
         );
 

@@ -26,7 +26,7 @@ public class PurchaseHistoryResponse {
 
         public purchaseHistoryDTO(List<PurchaseHistory> purchaseHistories, User user) {
             // Convert Timestamp to LocalDate
-            LocalDate localDate = purchaseHistories.getFirst().getCreatedAt().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate localDate = purchaseHistories.get(0).getCreatedAt().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             // Add 30 days
             LocalDate newDate = localDate.plusDays(30);
             this.profileIconPath = user.getProfileIcon().getPath();
@@ -58,10 +58,10 @@ public class PurchaseHistoryResponse {
                 this.description = purchaseHistory.getDescription();
                 this.servicePeriod = purchaseHistory.getServicePeriod();
                 this.paymethod = purchaseHistory.getPaymethod();
-                this.cardNumber = purchaseHistory.getCardInfo().getCardNumber();
+                this.cardNumber = purchaseHistory.getCardNumber();
                 this.amount = purchaseHistory.getAmount();
-                this.vat = (int) (purchaseHistory.getAmount()*0.1);
-                this.supplyValue = purchaseHistory.getAmount()-vat;
+                this.vat = (int) (purchaseHistory.getAmount() * 0.1);
+                this.supplyValue = purchaseHistory.getAmount() - vat;
             }
         }
     }
