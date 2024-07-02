@@ -144,23 +144,24 @@
                         // });
                         // 비디오 재생 버튼 클릭 이벤트 리스너 추가
                         document.querySelector('.playButton').addEventListener('click', function (event) {
-                            event.preventDefault(); // 앵커 태그의 기본 동작을 막습니다.
-                            const filename = this.dataset.filename;
-                            fetch('/api/check-subscription', {
-                                method: 'GET',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
+                                    event.preventDefault(); // 앵커 태그의 기본 동작을 막습니다.
+                                    const filename = this.dataset.filename;
+                                    fetch('/api/check-subscription', {
+                                        method: 'GET',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        }
+                                    })
                                     .then(response => response.json())
                                     .then(data => {
+                                        console.log(data.response.isSubscribed)
                                         if (data.response.isSubscribed) {
                                             if (filename) {
                                                 const s3BaseUrl = 'https://ohflix-bucket.s3.ap-northeast-2.amazonaws.com/';
                                                 const videoUrl = `${s3BaseUrl}${filename}`;
-                                                loadVideo2(videoUrl);
+                                                loadVideo2(videoUrl, filename);
                                             } else {
-                                                alert('먼저 동영상을 업로드해주세요.');
+                                                alert('동영상이 아직 업로드 되지 않았습니다.');
                                             }
                                         } else {
                                             const userConfirmed = confirm('구독 후에 이용할 수 있습니다. 결제 페이지로 이동하시겠습니까?');

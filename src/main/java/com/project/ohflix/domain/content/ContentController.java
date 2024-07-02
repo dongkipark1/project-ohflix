@@ -1,6 +1,5 @@
 package com.project.ohflix.domain.content;
 
-import com.project.ohflix.domain.mylist.MyList;
 import com.project.ohflix.domain.mylist.MyListService;
 import com.project.ohflix.domain.user.SessionUser;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,7 +30,7 @@ public class ContentController {
     @GetMapping("/api/content-details")
     public String getContentDetails(HttpServletRequest request) { //TODO : 나중에 여기 PathVariable로 contentID 설정해야됨
         Integer contentId = 2;
-        ContentResponse.DetailsDTO respDTO= contentService.getContentDetails(contentId);
+        ContentResponse.DetailsDTO respDTO = contentService.getContentDetails(contentId);
         request.setAttribute("DetailsDTO", respDTO);
         return "content/content-details";
     }
@@ -59,7 +58,15 @@ public class ContentController {
     @GetMapping("/api/video/current-time")
     public ResponseEntity<?> getVideoCurrentTime(@RequestParam("filename") String filename) {
         SessionUser sessionUser = (SessionUser) httpSession.getAttribute("sessionUser");
-        Double playedTime=myListService.getPlayedTime(sessionUser.getId(), filename);
+        SessionUser sessionAdmin = (SessionUser) httpSession.getAttribute("sessionAdmin");
+        Integer userId = null;
+        if (sessionAdmin != null) {
+            userId = sessionAdmin.getId();
+        }
+        if (sessionUser != null) {
+            userId = sessionUser.getId();
+        }
+        Double playedTime = myListService.getPlayedTime(userId, filename);
         System.out.println("Returning current time: " + playedTime);  // 반환할 시간을 콘솔에 출력
         return ResponseEntity.ok().body(new ContentRequest.VideoProgressDTO(filename, playedTime));
     }

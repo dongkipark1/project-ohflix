@@ -12,11 +12,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserApiController {
     private final UserService userService;
 
-    // 구독여부체크
+    // 구독 여부체크
     @GetMapping("/api/check-subscription")
     public ResponseEntity<?> checkSubscription(HttpSession session) {
         SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
-        UserResponse.IsSubscribed respDTO = userService.checkSubscription(sessionUser.getId());
+        SessionUser sessionAdmin = (SessionUser) session.getAttribute("sessionAdmin");
+        Integer userId = null;
+        if (sessionAdmin != null) {
+            userId = sessionAdmin.getId();
+        }
+        if (sessionUser != null) {
+            userId = sessionUser.getId();
+        }
+        UserResponse.IsSubscribed respDTO = userService.checkSubscription(userId);
         return ResponseEntity.ok(new ApiUtil<>(respDTO));
     }
 
