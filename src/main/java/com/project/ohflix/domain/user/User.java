@@ -82,5 +82,9 @@ public class User {
         this.password = reqDTO.getNewPasswordCheck();
     }
 
+    public void updateIsSubscribe () {
+        this.isSubscribe = true;
+    }
+
     
 }

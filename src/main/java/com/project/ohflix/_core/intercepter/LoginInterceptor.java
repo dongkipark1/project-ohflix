@@ -24,7 +24,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             throw new Exception401("로그인 하셔야 해요");
         }
         if (sessionUser.getStatus() == Status.ADMIN) {
-            session.setAttribute("adminUser", sessionUser);
+            session.setAttribute("sessionAdmin", sessionUser);
         } else if (sessionUser.getStatus() == Status.USER) {
             session.setAttribute("sessionUser", sessionUser);
         }
