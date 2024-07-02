@@ -124,11 +124,19 @@ public class UserService {
         } else {
             // 5. 없으면? - 강제 회원가입
             User user = User.builder()
+                    // 카카오에서 부여 - nickname
+                    // 카카오에서 이름 - response.getBody().getProperties().getNickname()
                     .nickname(nickname)
                     .password(UUID.randomUUID().toString())
-                    .email(response.getBody().getProperties().getNickname() + "@ohflix.com")
+                    .email(nickname + "@ohflix.com")
                     .provider("kakao")
                     .status(Status.USER)
+                    .profileIcon(ProfileIcon.builder().id(1).build())
+                    .userSaveRate(Rate.ALL)
+                    .isKids(false)
+                    .loginSave(false)
+                    .isAutoPlay(false)
+                    .isSubscribe(false)
                     .build();
             User returnUser = userRepository.save(user);
             saveSessionToRedis("sessionUser", returnUser);
