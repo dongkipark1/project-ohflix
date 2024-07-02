@@ -24,15 +24,17 @@ public class MyListController {
     private final MyListService myListService;
     private final UserService userService;
 
+    // 내가 찜한 콘텐츠
     @GetMapping("/api/my-favorite-list")
     public String getMyFavList(HttpServletRequest request) {
         SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
         MyListResponse.MyListDTO respDTO = myListService.findMyListById(sessionUser.getId());
         System.out.println("respDTO = " + respDTO);
-        request.setAttribute("MyListDTO", respDTO);
+            request.setAttribute("MyListDTO", respDTO);
         return "mylist/my-favorite-list";
     }
 
+    // 찜하기
     @PostMapping("/api/users/{contentId}/favorite")
     public ResponseEntity<?> addFavorite(@PathVariable int contentId, MyListRequest.AddFavoriteDTO reqDTO) {
         SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
@@ -44,6 +46,7 @@ public class MyListController {
         return ResponseEntity.ok(new ApiUtil<>(true));  // 찜 성공 여부를 JSON으로 반환
     }
 
+    // 찜하기 취소
     @PostMapping("/api/users/{contentId}/unfavorite")
     public ResponseEntity<?> removeFavorite(@PathVariable int contentId, MyListRequest.RemoveFavoriteDTO reqDTO) {
         SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
