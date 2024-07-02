@@ -10,6 +10,7 @@ import com.project.ohflix.domain.user.UserRepository;
 import com.project.ohflix.domain.cardInfo.CardInfo;
 import com.project.ohflix.domain.cardInfo.CardInfoRepository;
 import com.project.ohflix.domain.cardInfo.CardInfoResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -98,7 +101,8 @@ public class PurchaseHistoryService {
 
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("cid", cid);
-        body.add("partner_order_id", "order_id_" + userId);
+        String partnerOrderId = "order_id_" + userId;
+        body.add("partner_order_id", partnerOrderId);
         body.add("partner_user_id", String.valueOf(userId));
         body.add("item_name", itemName);
         body.add("quantity", "1");
@@ -126,6 +130,13 @@ public class PurchaseHistoryService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         LocalDateTime createdAt = LocalDateTime.parse((String) responseBody.get("created_at"), formatter);
 
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(true);
+        session.setAttribute("tid", responseBody.get("tid"));
+        session.setAttribute("partner_order_id", partnerOrderId);
+        session.setAttribute("partner_user_id", String.valueOf(userId));
+
+
         return new PurchaseHistoryResponse.KakaoPayReadyDTO(
                 (String) responseBody.get("tid"),
                 (String) responseBody.get("next_redirect_app_url"),
@@ -152,8 +163,17 @@ public class PurchaseHistoryService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("cid", cid);
         body.add("tid", tid);
-        body.add("partner_order_id", "order_id_" + userId);
-        body.add("partner_user_id", String.valueOf(userId));
+
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(true);
+        String partnerOrderId = (String) session.getAttribute("partner_order_id");
+        String partnerUserId = (String) session.getAttribute("partner_user_id");
+        if (partnerOrderId == null || partnerUserId == null) {
+            throw new IllegalStateException("Partner order ID or user ID not found in session.");
+        }
+
+        body.add("partner_order_id", partnerOrderId);
+        body.add("partner_user_id", partnerUserId);
         body.add("pg_token", pgToken);
 
         HttpHeaders headers = new HttpHeaders();
@@ -225,6 +245,9 @@ public class PurchaseHistoryService {
                     Timestamp.valueOf(approvedAt)
             );
 
+            // 결제 내역 저장
+            savePurchaseHistory(userId, approveDTO);
+            updateSubscriptionStatus(userId, true);
 
             return approveDTO;
 
@@ -250,6 +273,14 @@ public class PurchaseHistoryService {
                 .createdAt(approveDTO.getApprovedAt())
                 .build();
         purchaseHistoryRepository.save(purchaseHistory);
+    }
+
+    // 구독 상태 업데이트 메서드
+    @Transactional
+    public void updateSubscriptionStatus(int userId, boolean isSubscribe) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new Exception404("User not found"));
+        user.setSubscribe(isSubscribe);
+        userRepository.save(user);
     }
 
     // 정기 결제 요청
