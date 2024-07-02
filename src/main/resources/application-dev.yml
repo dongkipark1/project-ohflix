@@ -11,6 +11,7 @@ server:
     max-swallow-size: -1 # -1은 제한 없음을 의미합니다.
 
 spring:
+  # .env import
   config:
     import: optional:file:.env[.properties]
   mustache:
@@ -64,3 +65,5 @@ kakao:
 custom:
   video:
     request-url: http://localhost:7000/
+  openai:
+    key: ${OPENAI_KEY}
