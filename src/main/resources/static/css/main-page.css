@@ -55,6 +55,7 @@ nav ul {
 
 nav li {
     display: block;
+    margin-left: 20px;
 }
 
 nav ul li a {
@@ -182,6 +183,16 @@ nav ul li a {
 
 .dropdown:hover .dropdown-content {
     display: block;
+}
+
+.dropdown-content a i.material-icons, span {
+    margin-right: 10px;
+}
+
+.dropdown-content hr {
+    border-width: 1px 0 0 0;
+    border-color: #999;
+    height: 1px;
 }
 
 /*drop down notification*/
@@ -396,6 +407,7 @@ nav ul li a {
     overflow: hidden;
     border-radius: .2vw;
 }
+
 /* rank 영화 */
 .top10-movies {
     height: 13vw;
@@ -427,8 +439,9 @@ nav ul li a {
     width: 100%;
     overflow: hidden;
 }
+
 /* modal 콘텐츠 */
-.content{
+.content {
     cursor: pointer;
 }
 

@@ -1,18 +1,25 @@
 package com.project.ohflix.domain.purchaseHistory;
 
+import com.project.ohflix._core.error.exception.Exception404;
+import com.project.ohflix.domain._enums.Paymethod;
 import com.project.ohflix.domain.cardInfo.CardInfoResponse;
 import com.project.ohflix.domain.cardInfo.CardInfoService;
 import com.project.ohflix.domain.content.ContentRepository;
 import com.project.ohflix.domain.content.ContentResponse;
 import com.project.ohflix.domain.content.ContentService;
 import com.project.ohflix.domain.user.SessionUser;
+import com.project.ohflix.domain.user.User;
+import com.project.ohflix.domain.user.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +34,10 @@ public class PurchaseHistoryController {
     private final ContentRepository contentRepository;
     private final ContentService contentService;
     private final CardInfoService cardInfoService;
+    private final UserRepository userRepository;
+    private final PurchaseHistoryNativeRepository purchaseHistoryNativeRepository;
+    private final PurchaseHistoryRepository purchaseHistoryRepository;
+    private static final Logger logger = LoggerFactory.getLogger(PurchaseHistoryService.class);
 
     @GetMapping("/api/membership/payment")
     public String membershipPayment(HttpServletRequest request) {
@@ -117,7 +128,7 @@ public class PurchaseHistoryController {
 
     @PostMapping("/kakaoPay/ready")
     @ResponseBody
-    public ResponseEntity<Map<String, String>> readyToKakaoPay(@RequestBody Map<String, Object> request) {
+    public ResponseEntity<Map<String, String>> readyToKakaoPay(@RequestBody Map<String, Object> request, HttpSession session) {
         int userId = (int) request.get("userId");
         String itemName = (String) request.get("itemName");
         int totalAmount = (int) request.get("totalAmount");
@@ -125,33 +136,47 @@ public class PurchaseHistoryController {
 
         PurchaseHistoryResponse.KakaoPayReadyDTO kakaoPayReadyDTO = purchaseHistoryService.preparePayment(userId, itemName, totalAmount, vatAmount);
 
+        // 세션에 tid 저장
+        session.setAttribute("tid", kakaoPayReadyDTO.getTid());
+
         Map<String, String> response = new HashMap<>();
         response.put("redirectUrl", kakaoPayReadyDTO.getNextRedirectPcUrl());
 
         return ResponseEntity.ok(response);
     }
 
-
     @GetMapping("/api/kakaoPaySuccess")
-    public String paymentSuccess(@RequestParam String code, Model model) {
-        // 실제 유저 ID와 tid를 사용하여 결제 승인을 요청합니다.
-        int userId = 2; // 실제 유저 ID로 변경
-        String tid = "T1234567890123456789"; // 실제로는 저장된 tid를 사용
+    public ModelAndView paymentSuccess(@RequestParam(value = "pg_token", required = true) String pgToken) {
+        SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
+        int userId = sessionUser.getId();
+        String tid = (String) session.getAttribute("tid");
 
-        PurchaseHistoryResponse.KakaoPayApproveDTO response = purchaseHistoryService.approvePayment(userId, tid, code);
+        // 결제 승인 처리
+        PurchaseHistoryResponse.KakaoPayApproveDTO approveDTO = purchaseHistoryService.approvePayment(userId, tid, pgToken);
 
-        model.addAttribute("code", response.getAid());
-        return "paymethod/success";
+        // 결제 내역 저장
+        purchaseHistoryService.savePurchaseHistory(userId, approveDTO);
+
+        // 성공 페이지 리다이렉트
+        ModelAndView modelAndView = new ModelAndView("paymethod/pay-success");
+        modelAndView.addObject("pgToken", pgToken);
+        modelAndView.addObject("approveDTO", approveDTO);
+        return modelAndView;
+    }
+
+    @GetMapping("/api/errorPage")
+    public ModelAndView errorPage() {
+        return new ModelAndView("paymethod/error-page");
     }
 
     @GetMapping("/api/kakaoPayFail")
     public String kakaoPayFail() {
-        return "결제 실패 페이지"; // 실제로는 결제 실패 페이지로 리다이렉트합니다.
+        return "/paymethod/pay-fail"; // 실제로는 결제 실패 페이지로 리다이렉트합니다.
     }
 
     @GetMapping("/api/kakaoPayCancel")
     public String kakaoPayCancel() {
-        return "결제 취소 페이지"; // 실제로는 결제 취소 페이지로 리다이렉트합니다.
+        return "/paymethod/pay-cancel"; // 실제로는 결제 취소 페이지로 리다이렉트합니다.
     }
 
 
