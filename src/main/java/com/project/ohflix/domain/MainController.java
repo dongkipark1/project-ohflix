@@ -25,7 +25,15 @@ public class MainController {
     @GetMapping("/api/main-page")
     public String getMainPage(HttpServletRequest request) {
         SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
-        ContentResponse.MainPageDTO respDTO =  contentService.getMainPageData(sessionUser.getId());
+        SessionUser sessionAdmin = (SessionUser) session.getAttribute("sessionAdmin");
+        Integer userId = null;
+        if (sessionAdmin != null) {
+            userId = sessionAdmin.getId();
+        }
+        if (sessionUser!= null) {
+            userId = sessionUser.getId();
+        }
+        ContentResponse.MainPageDTO respDTO =  contentService.getMainPageData(userId);
         request.setAttribute("MainPageDTO", respDTO);
         return "main-page";
     }
