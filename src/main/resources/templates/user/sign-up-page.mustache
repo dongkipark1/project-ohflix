@@ -34,15 +34,15 @@
             <form action="/signup" method="post" enctype="multipart/form-data" id="sign-up-form">
                 <div class="input-group">
                     <div class="input-container">
-                        <input type="email" id="email" name="email" required value="ssar@nate.com">
+                        <input type="email" id="email" name="email" placeholder=" " required >
                         <label for="email">이메일을 입력해주세요</label>
                     </div>
                     <div class="input-container">
-                        <input type="password" id="password" name="password" required value="1234">
+                        <input type="password" id="password" name="password" placeholder=" " required>
                         <label for="password">비밀번호를 입력해주세요</label>
                     </div>
                     <div class="input-container">
-                        <input type="text" id="nickname" name="nickname" required value="쌀쌀">
+                        <input type="text" id="nickname" name="nickname" placeholder=" " required>
                         <label for="nickname">닉네임을 입력해주세요</label>
                     </div>
                 </div>
@@ -60,13 +60,19 @@
             </form>
             <script>
                 document.getElementById("sign-up-form").addEventListener("submit", function (event) {
+                    // hide 클래스 제거
+                    // 폼 제출 기본 동작 막기
+                    event.preventDefault();
                     // 폼 제출 시 hide 클래스 추가
                     document.querySelector("section").classList.add("hide");
 
-                    // 0.5초 후에 hide 클래스 제거 - 500ms 작동X
+                    // 0.5초 후에 폼 제출
+                    setTimeout(function () {
+                        document.getElementById("sign-up-form").submit();
+                    }, 500);
                     setTimeout(function () {
                         document.querySelector("section").classList.remove("hide");
-                    }, 500);
+                    }, 700);
                 });
             </script>
         </div>

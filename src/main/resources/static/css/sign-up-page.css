@@ -10,18 +10,18 @@ html {
 }
 /* 전환 애니메이션 */
 section {
-    transition: transform .2s ease, opacity .2s ease;
+    transition: transform 2s ease, opacity .5s ease;
     transform: translateX(0);
     opacity: 1;
 }
 
 /* 애니메이션 효과 적용 */
 section.hide {
-    transform: translateX(-100%);
+    transform: translateX(-20%);
     opacity: 0;
 }
 section.hide2 {
-    transform: translateX(100%);
+    transform: translateX(20%);
     opacity: 0;
 }
 

@@ -326,13 +326,11 @@ public class UserService {
     @Transactional
     public UserResponse.SignupDTO signup(UserRequest.SignupDTO reqDTO) {
 
-        String hashedPassword = BCrypt.hashpw(UUID.randomUUID().toString(), BCrypt.gensalt());
+        String hashedPassword = BCrypt.hashpw(reqDTO.getPassword(), BCrypt.gensalt());
 
         User user = User.builder()
                 .email(reqDTO.getEmail())
                 .password(hashedPassword)
-//                .password(reqDTO.getPassword())
-//                .password(UUID.randomUUID().toString())
                 .nickname(reqDTO.getNickname())
                 .status(Status.USER)
                 .profileIcon(ProfileIcon.builder().id(1).build())
