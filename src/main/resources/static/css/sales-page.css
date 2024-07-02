@@ -118,24 +118,9 @@ nav {
     margin-right: 20px;
     font-size: 14px;
 }
-
-.main-section{
-    width: 70%;
-    display: flex;
-    flex-direction: column;
+.sidebar-icon {
+    margin-right: 10px;
 }
-
-.main-left-text {
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 20px;
-    cursor: pointer;
-}
-
-.main-left-text:hover {
-    background-color: #E2E2E2; /* 커서를 가져다댔을 때 어두워지는 효과 */
-}
-
 .custom-list li {
     font-size: 17px;
     border-radius: 10px;
@@ -156,7 +141,24 @@ nav {
 .main-left-icon {
     margin-right: 10px;
 }
-/* """"""""""""""""""""""""""main - right"""""""""""""""""""""""""" */
+.main-left-text {
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.main-left-text:hover {
+    background-color: #E2E2E2; /* 커서를 가져다댔을 때 어두워지는 효과 */
+}
+
+/* 메인 섹션 */
+.main-section{
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+}
+
 .main-right-margin {
     display: flex;
     flex-direction: column;
@@ -228,9 +230,10 @@ footer {
     margin: 5px 0;
 }
 
-footer div {
-    color: rgb(177, 177, 177);
-    width: 70vw;
+footer div{
+    color: rgb(160, 160, 160);
+    width: 1100px;
+    padding: 10px 50px;
     margin-top: 40px;
     margin-bottom: 40px;
 }
