@@ -25,6 +25,8 @@
         document.addEventListener('mozfullscreenchange', onFullscreenChange); // Firefox
         document.addEventListener('msfullscreenchange', onFullscreenChange); // IE/Edge
 
+
+
         contents.forEach(content => {``
             content.addEventListener('click', function () {
                 const contentId = this.dataset.contentId;
@@ -210,9 +212,6 @@
                     });
         }
 
-
-        document.addEventListener('DOMContentLoaded', initApp2);
-
         function initApp2() {
             // Install built-in polyfills to patch browser incompatibilities.
             shaka.polyfill.installAll();
@@ -313,5 +312,6 @@
                 console.error('An unknown error occurred.');
             }
         }
+        initApp2();
     });
 </script>
