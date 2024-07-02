@@ -126,9 +126,10 @@ public class UserService {
             User user = User.builder()
                     // 카카오에서 부여 - nickname
                     // 카카오에서 이름 - response.getBody().getProperties().getNickname()
+                    .email(nickname + "@ohflix.com")
+                    .name(response.getBody().getProperties().getNickname())
                     .nickname(nickname)
                     .password(UUID.randomUUID().toString())
-                    .email(nickname + "@ohflix.com")
                     .provider("kakao")
                     .status(Status.USER)
                     .profileIcon(ProfileIcon.builder().id(1).build())
