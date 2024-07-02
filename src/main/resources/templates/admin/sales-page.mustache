@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Netflix Monthly Revenue Chart</title>
+    <title>관리자 페이지 - 매출 관리</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="/static/css/sales-page.css"/> <!-- 외부 CSS 파일을 연결 -->
+    <link rel="stylesheet" href="/static/css/reset.css"/>
+    <link rel="stylesheet" href="/static/css/sales-page.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
-
+    <!-- 파비콘 ( 아이콘 ) -->
+    <link rel="icon" href="/static/images/OH!.ico">
 </head>
 <body>
 <!-- nav start -->
 <nav>
     <div class="nav-div">
         <div>
-            <img src="/static/images/OH!FLIX.png" alt="오류" class="nav-logo"/>
+            <a href="/api/main-page">
+                <img src="/static/images/OH!FLIX.png" alt="오류" class="nav-logo"/>
+            </a>
         </div>
-        <div>
-            <img src="/static/images/profile.png" alt="오류" class="nav-profile"/>
-            <div>
-                <i class="fa-solid fa-caret-down fa-xs"></i>
-            </div>
+        <div class="logout">
+            <a href="/logout">로그아웃</a>
         </div>
     </div>
 </nav>
@@ -27,70 +28,42 @@
 <!-- main left-->
 <main>
     <div class="main-div">
-        <div class="main-left-top">
-            <a href="/api/main-page">
-                <div class="main-left-text">
-                    <i class="fa-solid fa-arrow-left main-left-icon"></i>넷플릭스로
-                    돌아가기
+        <!-- 사이드 바 메뉴 -->
+        {{> /_components/admin-sidebar}}
+
+        <!-- main left end-->
+        <div class="main-section">
+            <div class="main-right-margin">
+                <div class="title">
+                    <div class="title-red">OH!FLIX</div>
+                    월 매출
                 </div>
-            </a>
-
-            <ul class="custom-list">
-                <a href="/admin/admin-upload">
-                    <li><i class="fa-solid fa-upload"></i>영상 업로드</li>
-                </a>
-
-                <a href="/api/video-manage">
-                    <li><i class="fa-solid fa-photo-film"></i>영상 관리</li>
-                </a>
-
-                <a href="/admin/members-manage">
-                    <li><i class="fa-solid fa-users-gear"></i>회원 관리</li>
-                </a>
-
-                <a href="/admin/refund-manage">
-                    <li><i class="fa-solid fa-comment-dots"></i>멤버십 해지 요청</li>
-                </a>
-
-                <a href="/admin/sales-page">
-                    <li><i class="fa-solid fa-chart-line"></i>매출 관리</li>
-                </a>
-
-            </ul>
-        </div>
-    </div>
-    <!-- main left end-->
-    <div class="main-div">
-        <div class="main-right-margin">
-            <div class="title">
-                <div class="title-red">OH!FLIX</div>
-                월 매출
+                <div class="canvas-container">
+                    <canvas id="line-chart" width="750" height="400"></canvas>
+                </div>
+                <div class="table-title">월별 구독 현황</div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>년월</th>
+                        <th>구독 회원 수</th>
+                        <th>총 가입자 수</th>
+                        <th>이달 매출</th>
+                        <th>올해 누적 매출</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#SalesPageDTO}}
+                        <tr>
+                            <td>{{yearMonth}}</td>
+                            <td>{{subscribeUserCount}}</td>
+                            <td>{{cumulativeUserCount}}</td>
+                            <td>{{monthlySales}}</td>
+                            <td>{{cumulativeSales}}</td>
+                        </tr>
+                    {{/SalesPageDTO}}
+                </table>
             </div>
-            <div class="canvas-container">
-                <canvas id="line-chart" width="750" height="400"></canvas>
-            </div>
-            <div class="table-title">월별 구독 현황</div>
-            <table>
-                <thead>
-                <tr>
-                    <th>년월</th>
-                    <th>구독 회원 수</th>
-                    <th>총 가입자 수</th>
-                    <th>이달 매출</th>
-                    <th>올해 누적 매출</th>
-                </tr>
-                </thead>
-                <tbody>
-                {{#SalesPageDTO}}
-                <tr>
-                    <td>{{yearMonth}}</td>
-                    <td>{{subscribeUserCount}}</td>
-                    <td>{{cumulativeUserCount}}</td>
-                    <td>{{monthlySales}}</td>
-                    <td>{{cumulativeSales}}</td>
-                </tr>
-                {{/SalesPageDTO}}
-            </table>
         </div>
     </div>
 </main>

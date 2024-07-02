@@ -127,6 +127,7 @@ nav {
 
 
 /* """"""""""""""""""""""""""""""main"""""""""""""""""""""""""""""" */
+
 .main-div {
     width: 1100px;
     display: flex;
@@ -157,10 +158,6 @@ nav {
     background-color: #E2E2E2; /* 커서를 가져다댔을 때 어두워지는 효과 */
 }
 
-
-.main-left-bottom {
-    padding: 10px;
-}
 .custom-list li {
     font-size: 17px;
     border-radius: 10px;
