@@ -86,5 +86,8 @@ public class User {
         this.isSubscribe = true;
     }
 
+    public void setSubscribe(Boolean isSubscribe) {
+        this.isSubscribe = isSubscribe;
+    }
     
 }
