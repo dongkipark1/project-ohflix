@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -125,25 +126,26 @@ public class PurchaseHistoryController {
 
 
     @GetMapping("/api/kakaoPaySuccess")
-    public String paymentSuccess(@RequestParam String code, Model model) {
-        // 실제 유저 ID와 tid를 사용하여 결제 승인을 요청합니다.
-        int userId = 2; // 실제 유저 ID로 변경
-        String tid = "T1234567890123456789"; // 실제로는 저장된 tid를 사용
+    public ModelAndView paymentSuccess(@RequestParam(value = "pg_token", required = true) String pgToken) {
+        ModelAndView modelAndView = new ModelAndView("paymethod/pay-success");
+        modelAndView.addObject("pgToken", pgToken);
+        return modelAndView;
+    }
 
-        PurchaseHistoryResponse.KakaoPayApproveDTO response = purchaseHistoryService.approvePayment(userId, tid, code);
 
-        model.addAttribute("code", response.getAid());
-        return "paymethod/success";
+    @GetMapping("/api/errorPage")
+    public ModelAndView errorPage() {
+        return new ModelAndView("paymethod/error-page");
     }
 
     @GetMapping("/api/kakaoPayFail")
     public String kakaoPayFail() {
-        return "결제 실패 페이지"; // 실제로는 결제 실패 페이지로 리다이렉트합니다.
+        return "/paymethod/pay-fail"; // 실제로는 결제 실패 페이지로 리다이렉트합니다.
     }
 
     @GetMapping("/api/kakaoPayCancel")
     public String kakaoPayCancel() {
-        return "결제 취소 페이지"; // 실제로는 결제 취소 페이지로 리다이렉트합니다.
+        return "/paymethod/pay-cancel"; // 실제로는 결제 취소 페이지로 리다이렉트합니다.
     }
 
 
