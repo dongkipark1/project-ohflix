@@ -193,8 +193,23 @@ public class UserController {
 
     @PostMapping("/signup")
     public String singUpPost(UserRequest.SignupDTO reqDTO) {
-        userService.Signup(reqDTO);
-        return "redirect:/signup-page-step2";
+        try {
+            // 회원가입 시키기
+            UserResponse.SignupDTO newUser = userService.signup(reqDTO);
+            // 로그인 시키기
+            UserRequest.LoginDTO loginDTO = new UserRequest.LoginDTO();
+            loginDTO.setEmail(newUser.getEmail());
+            loginDTO.setPassword(newUser.getPassword());
+
+            SessionUser sessionUser = userService.login(loginDTO);
+            session.setAttribute("sessionUser", sessionUser);
+            redisTemplate.opsForValue().set("sessionUser", sessionUser);
+
+            return "redirect:/signup-page-step2";
+
+        } catch (Exception e) {
+            throw new Exception401("회원가입 중 오류가 발생했습니다.");
+        }
     }
 
     @GetMapping("/signup-page-step2")

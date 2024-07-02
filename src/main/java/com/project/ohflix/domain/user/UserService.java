@@ -324,13 +324,15 @@ public class UserService {
 
     // 회원가입 signUp
     @Transactional
-    public UserResponse.SignupDTO Signup(UserRequest.SignupDTO reqDTO) {
+    public UserResponse.SignupDTO signup(UserRequest.SignupDTO reqDTO) {
 
-        String hashedPassword = BCrypt.hashpw(reqDTO.getPassword(), BCrypt.gensalt());
+        String hashedPassword = BCrypt.hashpw(UUID.randomUUID().toString(), BCrypt.gensalt());
 
         User user = User.builder()
                 .email(reqDTO.getEmail())
-                .password(reqDTO.getPassword())
+                .password(hashedPassword)
+//                .password(reqDTO.getPassword())
+//                .password(UUID.randomUUID().toString())
                 .nickname(reqDTO.getNickname())
                 .status(Status.USER)
                 .profileIcon(ProfileIcon.builder().id(1).build())
