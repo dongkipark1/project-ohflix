@@ -226,10 +226,10 @@ public class UserService {
         User user = userRepository.findUsernameAndIcon(sessionUserId).orElseThrow(() -> new Exception404("사용자 정보를 찾을 수 없습니다."));
 
         // 결제 내역 찾기
-        PurchaseHistory purchaseHistory = purchaseHistoryRepository.findById(sessionUserId).orElseThrow(() -> new Exception404("사용자 정보를 찾을 수 없습니다."));
+        PurchaseHistory purchaseHistory = purchaseHistoryRepository.findById(sessionUserId).orElse(null);
 
         // 카드 정보 찾기
-        CardInfo cardInfo = cardInfoRepository.findUserInfo(sessionUserId).orElseThrow(() -> new Exception404("사용자 정보를 찾을 수 없습니다."));
+        CardInfo cardInfo = cardInfoRepository.findUserInfo(sessionUserId).orElse(null);
 
         return new UserResponse.AccountMembershipDTO(user, purchaseHistory, cardInfo);
     }
