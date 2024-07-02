@@ -254,7 +254,7 @@ public class UserService {
 
         List<UserResponse.SalesPageDTO> respDTO = new ArrayList<>();
         YearMonth startMonth = YearMonth.of(2024, 1);
-        YearMonth endMonth = YearMonth.of(2024, 12);
+        YearMonth endMonth = YearMonth.now(); // 현재 월 까지만 표시
 
         long cumulativeSales = 0;
         long cumulativeUserCount = 0;
@@ -280,6 +280,8 @@ public class UserService {
             respDTO.add(combinedStat);
         }
 
+        // respDTO를 yearMonth를 기준으로 내림차순 정렬
+        respDTO.sort((dto1, dto2) -> YearMonth.parse(dto2.getYearMonth()).compareTo(YearMonth.parse(dto1.getYearMonth())));
 
         return respDTO;
     }
