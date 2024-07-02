@@ -1,24 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-    <title>Netflix Monthly Revenue Chart</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/reset.css"/>
     <link rel="stylesheet" href="/static/css/members-manage.css"/> <!-- 외부 CSS 파일을 연결 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- 파비콘 ( 아이콘 ) -->
+    <link rel="icon" href="/static/images/OH!.ico">
+    <title>관리자 페이지 - 회원 관리</title>
 </head>
 <body>
 <!-- nav start -->
 <nav>
     <div class="nav-div">
         <div>
-            <img src="/static/images/OH!FLIX.png" alt="오류" class="nav-logo"/>
+            <a href="/api/main-page">
+                <img src="/static/images/OH!FLIX.png" alt="오류" class="nav-logo"/>
+            </a>
         </div>
-        <div>
-            <img src="/static/images/profile.png" alt="오류" class="nav-profile"/>
-            <div>
-                <i class="fa-solid fa-caret-down fa-xs"></i>
-            </div>
+        <div class="logout">
+            <a href="/logout">로그아웃</a>
         </div>
     </div>
 </nav>
@@ -27,75 +30,49 @@
 <!-- main left-->
 <main>
     <div class="main-div">
-        <div class="main-left-top">
-            <a href="/api/main-page">
-                <div class="main-left-text">
-                    <i class="fa-solid fa-arrow-left main-left-icon"></i>넷플릭스로
-                    돌아가기
-                </div>
-            </a>
-            <ul class="custom-list">
-                <a href="/admin/admin-upload">
-                    <li><i class="fa-solid fa-upload"></i>영상 업로드</li>
-                </a>
+        <!-- 사이드 바 메뉴 -->
+        {{> /_components/admin-sidebar}}
 
-                <a href="/api/video-manage">
-                    <li><i class="fa-solid fa-photo-film"></i>영상 관리</li>
-                </a>
+        <div class="main-section">
+            <div class="main-right-margin">
+                <div class="title">회원 관리</div>
+                <div class="member-container">
+                    <div class="member">
+                        <div class="member-count">
+                            <div class="gray">총 회원 수 :</div>
+                            <div class="ml-10">{{members.size}}</div>
+                        </div>
+                        <div class="member-count">
+                            <div class="gray">구독 회원 수 :</div>
+                            <div class="ml-10">{{subscriberCount}}</div>
+                        </div>
 
-                <a href="/admin/members-manage">
-                    <li><i class="fa-solid fa-users-gear"></i>회원 관리</li>
-                </a>
-
-                <a href="/admin/refund-manage">
-                    <li><i class="fa-solid fa-comment-dots"></i>멤버십 해지 요청</li>
-                </a>
-
-                <a href="/admin/sales-page">
-                    <li><i class="fa-solid fa-chart-line"></i>매출 관리</li>
-                </a>
-            </ul>
-        </div>
-    </div>
-    <!-- main left end-->
-    <div class="main-div">
-        <div class="main-right-margin">
-            <div class="title">회원 관리</div>
-            <div class="member-container">
-                <div class="member">
-                    <div class="member-count">
-                        <div class="gray">총 회원 수 :</div>
-                        <div class="ml-10">{{members.size}}</div>
                     </div>
-                    <div class="member-count">
-                        <div class="gray">구독 회원 수 : </div>
-                        <div class="ml-10">{{subscriberCount}}</div>
-                    </div>
-
                 </div>
-            </div>
-            <table>
-                <thead>
-                <tr>
-                    <th>NO</th>
-                    <th>이름</th>
-                    <th>계정 생성일</th>
-                    <th>구독 상태</th>
-                    <th>구독 개월 수</th>
-                </tr>
-                </thead>
-                <tbody>
-                {{#members}}
+                <table>
+                    <thead>
                     <tr>
-                        <td>{{index}}</td>
-                        <td>{{username}}</td>
-                        <td>{{formattedCreatedAt}}</td>
-                        <td>{{#isSubscribe}}<i class="fa-solid fa-fire red"></i>{{/isSubscribe}}{{^isSubscribe}}<i class="fa-solid fa-fire gray"></i>{{/isSubscribe}}</td>
-                        <td>{{monthsSubscribed}}</td>
+                        <th>NO</th>
+                        <th>이름</th>
+                        <th>계정 생성일</th>
+                        <th>구독 상태</th>
+                        <th>구독 개월 수</th>
                     </tr>
-                {{/members}}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    {{#members}}
+                        <tr>
+                            <td>{{index}}</td>
+                            <td>{{username}}</td>
+                            <td>{{formattedCreatedAt}}</td>
+                            <td>{{#isSubscribe}}<i class="fa-solid fa-fire red"></i>{{/isSubscribe}}{{^isSubscribe}}
+                                <i class="fa-solid fa-fire gray"></i>{{/isSubscribe}}</td>
+                            <td>{{monthsSubscribed}}</td>
+                        </tr>
+                    {{/members}}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </main>
