@@ -122,11 +122,14 @@ public class UserService {
             saveSessionToRedis("sessionUser", userPS);
             return userPS;
         } else {
+            ProfileIcon profileIcon = profileIconRepository.findById(1).orElseThrow(() ->
+                    new Exception404("정보를 찾을 수 없습니다."));
             // 5. 없으면? - 강제 회원가입
             User user = User.builder()
                     .nickname(nickname)
                     .password(UUID.randomUUID().toString())
                     .email(response.getBody().getProperties().getNickname() + "@ohflix.com")
+                    .profileIcon(profileIcon)
                     .provider("kakao")
                     .status(Status.USER)
                     .build();
