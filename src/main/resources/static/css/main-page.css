@@ -814,15 +814,13 @@ footer {
 #closeBtn {
     position: absolute;
     top: 10px;
-    /* 헤더와 겹치도록 상단 위치 조정 */
     right: 10px;
-    /* 오른쪽 위치 조정 */
     color: #fff;
-    /* 닫기 버튼 색상 */
+    font-weight: 100;
     font-size: 50px;
+    line-height: 30px;
     cursor: pointer;
     z-index: 2;
-    /* 닫기 버튼이 헤더 위에 오도록 설정 */
 }
 
 .buttons {
