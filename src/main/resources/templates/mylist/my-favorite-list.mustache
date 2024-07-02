@@ -180,6 +180,21 @@
         </div>
     </div>
     </section>
+    <section class="margin-section" id="my-list-section">
+        <h2>AI 추천 콘텐츠</h2>
+        <div class="movies">
+            <div class="item-list">
+                {{#openAIRequest}}
+                    {{#.}}
+                        <div class="item content" data-content-id="{{id}}">
+                            <img src="{{thumbnail}}" alt="{{id}}">
+                        </div>
+                    {{/.}}
+                {{/openAIRequest}}
+
+            </div>
+        </div>
+    </section>
 </main>
 
 <!-- 푸터 -->

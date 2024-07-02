@@ -81,9 +81,14 @@
                 <a href="/api/profile-form"><i class="material-icons">edit</i>프로필 관리</a>
                 <a href="/api/account-view"><i class="material-icons">account_circle</i> 계정</a>
                 <a href="#"><i class="material-icons">help_outline</i> 고객 센터</a>
-                <a href="/admin/sales-page"><span class="material-icons">manage_accounts</span>관리자 모드</a>
+                {{#sessionAdmin}}
+                    <a href="/admin/sales-page"><span class="material-icons">manage_accounts</span>관리자 모드</a>
+                {{/sessionAdmin}}
                 <hr>
                 <a href="/logout"><span class="material-icons">logout</span>오플릭스 로그아웃</a>
+                <!--                <a href="#"><i class="material-icons">help_outline</i> 고객 센터</a>-->
+                <a href="/admin/sales-page"><i class="material-icons">help_outline</i> 관리자 모드</a>
+                <a href="/logout">넷플릭스에서 로그아웃</a>
             </div>
         </div>
         <!--  프로필 드롭 다운 메뉴 종료  -->
@@ -166,18 +171,18 @@
             <div class="swiper-button-prev"></div>
         </div>
         <!-- swiper 스크립트 -->
-<!--        <script>-->
-<!--            var swiper = new Swiper(".mySwiper", {-->
-<!--                slidesPerView: 5,   // 화면에 보일 아이템 수-->
-<!--                slidesPerGroup: 5,  // 한 번에 넘길 아이템 수-->
-<!--                spaceBetween: 5,    // 간격-->
-<!--                loop: true,         // 무한 루프-->
-<!--                navigation: {-->
-<!--                    nextEl: ".swiper-button-next",-->
-<!--                    prevEl: ".swiper-button-prev",-->
-<!--                },-->
-<!--            });-->
-<!--        </script>-->
+        <!--        <script>-->
+        <!--            var swiper = new Swiper(".mySwiper", {-->
+        <!--                slidesPerView: 5,   // 화면에 보일 아이템 수-->
+        <!--                slidesPerGroup: 5,  // 한 번에 넘길 아이템 수-->
+        <!--                spaceBetween: 5,    // 간격-->
+        <!--                loop: true,         // 무한 루프-->
+        <!--                navigation: {-->
+        <!--                    nextEl: ".swiper-button-next",-->
+        <!--                    prevEl: ".swiper-button-prev",-->
+        <!--                },-->
+        <!--            });-->
+        <!--        </script>-->
     </section>
     <!-- Top10 영화 섹션 종료 -->
 
@@ -187,7 +192,7 @@
         <div class="swiper mySwiper">
             <div class="swiper-wrapper">
                 {{#MainPageDTO.newList}}
-                    <div class="swiper-slide content-list" >
+                    <div class="swiper-slide content-list">
                         <div class="content" data-content-id="{{newId}}">
                             <img src="{{newThumbnail}}" alt="new_01"/>
                         </div>
