@@ -379,6 +379,7 @@ public class UserService {
         user.updatePassword(reqDTO);
 
     }
+
     // 비밀번호 변경 페이지
     public UserResponse.PasswordChangePageDTO passwordChangePage(Integer sessionUserId) {
         User user = userRepository.findById(sessionUserId)
@@ -393,6 +394,15 @@ public class UserService {
                 .orElseThrow(() -> new Exception404("사용자를 찾을 수 없습니다."));
 
         return new UserResponse.RefundRequestPageDTO(user);
+    }
+
+    // 사용자 구독 여부 체크
+    public UserResponse.IsSubscribed checkSubscription(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new Exception404("사용자를 찾을 수 없습니다."));
+
+        return new UserResponse.IsSubscribed(user);
+
     }
 }
 

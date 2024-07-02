@@ -337,5 +337,14 @@ public class UserResponse {
             this.status = user.getStatus();
         }
     }
+
+    @Data
+    public static class IsSubscribed {
+        private Boolean isSubscribed;
+
+        public IsSubscribed(User user) {
+            this.isSubscribed = user.getIsSubscribe();
+        }
+    }
 }
 

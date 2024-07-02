@@ -140,176 +140,195 @@
                                 console.error('Error fetching content info:', error);
                             });
                         });
+
                         // 비디오 재생 버튼 클릭 이벤트 리스너 추가
                         document.querySelector('.playButton').addEventListener('click', function (event) {
                             event.preventDefault(); // 앵커 태그의 기본 동작을 막습니다.
                             const filename = this.dataset.filename;
-                            if (filename) {
-                                const s3BaseUrl = 'https://ohflix-bucket.s3.ap-northeast-2.amazonaws.com/';
-                                const videoUrl = `${s3BaseUrl}${filename}`;
-                                loadVideo2(videoUrl);
-                            } else {
-                                alert('먼저 동영상을 업로드해주세요.');
-                            }
+                            fetch('/api/check-subscription', {
+                                method: 'GET',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.response.isSubscribed) {
+                                    if (filename) {
+                                        const s3BaseUrl = 'https://ohflix-bucket.s3.ap-northeast-2.amazonaws.com/';
+                                        const videoUrl = `${s3BaseUrl}${filename}`;
+                                        loadVideo2(videoUrl);
+                                    } else {
+                                        alert('먼저 동영상을 업로드해주세요.');
+                                    }
+                                } else {
+                                    const userConfirmed = confirm('구독 후에 이용할 수 있습니다. 결제 페이지로 이동하시겠습니까?');
+                                    if (userConfirmed) {
+                                        window.location.href = '/api/paymethod-form'; // 결제 페이지 URL로 변경
+                                    }
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                alert('서버와 통신 중 오류가 발생했습니다.');
+                            });
                         });
-                    })
-                    .catch(error => {
-                        modalData.innerText = 'Error loading data';
-                        console.error('Error:', error);
-                    });
 
 
-            function toggleFavorite(contentId, isFavorite, favoriteButton) {
-                const url = isFavorite ? `/api/users/${contentId}/unfavorite` : `/api/users/${contentId}/favorite`;
-                fetch(url, {method: 'POST'})
-                        .then(response => {
-                            if (response.ok) {
-                                // 찜 상태를 반대로 변경
-                                const newIsFavorite = !isFavorite;
+                        function toggleFavorite(contentId, isFavorite, favoriteButton) {
+                            const url = isFavorite ? `/api/users/${contentId}/unfavorite` : `/api/users/${contentId}/favorite`;
+                            fetch(url, {method: 'POST'})
+                                    .then(response => {
+                                        if (response.ok) {
+                                            // 찜 상태를 반대로 변경
+                                            const newIsFavorite = !isFavorite;
+                                            // 버튼 아이콘 업데이트
+                                            favoriteButton.innerHTML = newIsFavorite ? '<i class="fa-solid fa-check"></i></i>' : '<i class="fa-solid fa-plus"></i>';
+                                            // 다음 클릭 시의 상태를 업데이트
+                                            favoriteButton.onclick = function () {
+                                                toggleFavorite(contentId, newIsFavorite, favoriteButton);
+                                            };
+                                        } else {
+                                            console.error('Failed to update favorite status');
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                    });
+                        }
+
+                        function toggleLike(contentId, isLike, likeButton) {
+                            const url = isLike ? `/api/users/${contentId}/dislike` : `/api/users/${contentId}/like`;
+                            fetch(url, {method: 'POST'})
+                                    .then(response => {
+                                        if (response.ok) {
+                                            return response.json(); // JSON 데이터를 반환하도록 함
+                                        } else {
+                                            throw new Error('Failed to update like status');
+                                        }
+                                    }).then(data => {
+                                // JSON 데이터를 성공적으로 받았을 때 실행
+                                const newIsLike = data.isLiked; // 서버 응답에서 새로운 좋아요 상태 가져오기
                                 // 버튼 아이콘 업데이트
-                                favoriteButton.innerHTML = newIsFavorite ? '<i class="fa-solid fa-check"></i></i>' : '<i class="fa-solid fa-plus"></i>';
+                                likeButton.innerHTML = newIsLike ? '<i class="fa-solid fa-thumbs-up"></i>' : '<i class="fa-regular fa-thumbs-up"></i>';
                                 // 다음 클릭 시의 상태를 업데이트
-                                favoriteButton.onclick = function () {
-                                    toggleFavorite(contentId, newIsFavorite, favoriteButton);
+                                likeButton.onclick = function () {
+                                    toggleLike(contentId, newIsLike, likeButton);
                                 };
-                            } else {
-                                console.error('Failed to update favorite status');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        });
-            }
-
-            function toggleLike(contentId, isLike, likeButton) {
-                const url = isLike ? `/api/users/${contentId}/dislike` : `/api/users/${contentId}/like`;
-                fetch(url, {method: 'POST'})
-                        .then(response => {
-                            if (response.ok) {
-                                return response.json(); // JSON 데이터를 반환하도록 함
-                            } else {
-                                throw new Error('Failed to update like status');
-                            }
-                        }).then(data => {
-                    // JSON 데이터를 성공적으로 받았을 때 실행
-                    const newIsLike = data.isLiked; // 서버 응답에서 새로운 좋아요 상태 가져오기
-                    // 버튼 아이콘 업데이트
-                    likeButton.innerHTML = newIsLike ? '<i class="fa-solid fa-thumbs-up"></i>' : '<i class="fa-regular fa-thumbs-up"></i>';
-                    // 다음 클릭 시의 상태를 업데이트
-                    likeButton.onclick = function () {
-                        toggleLike(contentId, newIsLike, likeButton);
-                    };
-                })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        });
-            }
-        }
-
-
-        document.addEventListener('DOMContentLoaded', initApp2);
-
-        function initApp2() {
-            // Install built-in polyfills to patch browser incompatibilities.
-            shaka.polyfill.installAll();
-
-            // Check if the browser supports the basic APIs Shaka needs.
-            if (shaka.Player.isBrowserSupported()) {
-                // Everything looks good!
-                initPlayer2();
-            } else {
-                // This browser does not have the minimum set of APIs we need.
-                console.error('Browser not supported!');
-            }
-
-            // 전체화면 모드 변경 이벤트 리스너 추가
-            // document.addEventListener('fullscreenchange', onFullscreenChange);
-            // document.addEventListener('webkitfullscreenchange', onFullscreenChange); // Safari
-            // document.addEventListener('mozfullscreenchange', onFullscreenChange); // Firefox
-            // document.addEventListener('MSFullscreenChange', onFullscreenChange); // IE/Edge
-
-        }
-
-        function initPlayer2() {
-            // Listen for error events.
-            window.addEventListener('error', onErrorEvent);
-        }
-
-        function createVideoElement() {
-            const videoContainer = document.getElementById('videoContainer');
-            videoContainer.innerHTML = ''; // 비디오 컨테이너를 초기화
-
-            const video = document.createElement('video');
-            video.id = 'videoPlayer';
-            video.controls = true;
-            video.autoplay = true;
-            video.muted = false;
-
-            videoContainer.appendChild(video);
-            videoContainer.style.display = 'block'; // 비디오 컨테이너를 표시
-            return video;
-        }
-
-        function loadVideo2(videoUrl) {
-            console.log("Loading video from URL:", videoUrl); // 추가 로그
-
-            const videoContainer = document.getElementById('videoContainer');
-            const video = createVideoElement();
-            const player = new shaka.Player(video);
-
-            window.player = player;
-
-            player.addEventListener('error', onErrorEvent);
-
-            // 매니페스트를 로드합니다.
-            try {
-                player.load(videoUrl).then(function () {
-                    console.log('The video has now been loaded!');
-                    video.play();
-
-                    // 비디오 재생 시작 시 전체화면 모드로 전환합니다.
-                    if (!document.fullscreenElement) {
-                        videoContainer.requestFullscreen().catch(err => {
-                            console.log(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
-                        });
+                            })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                    });
+                        }
                     }
-                }).catch(function (error) {
-                    console.error('Error during player.load:', error);
-                    onError(error);
-                });
-            } catch (e) {
-                console.error('Error during player.load try-catch:', e);
-                onError(e);
+
+
+            document.addEventListener('DOMContentLoaded', initApp2);
+
+            function initApp2() {
+                // Install built-in polyfills to patch browser incompatibilities.
+                shaka.polyfill.installAll();
+
+                // Check if the browser supports the basic APIs Shaka needs.
+                if (shaka.Player.isBrowserSupported()) {
+                    // Everything looks good!
+                    initPlayer2();
+                } else {
+                    // This browser does not have the minimum set of APIs we need.
+                    console.error('Browser not supported!');
+                }
+
+                // 전체화면 모드 변경 이벤트 리스너 추가
+                // document.addEventListener('fullscreenchange', onFullscreenChange);
+                // document.addEventListener('webkitfullscreenchange', onFullscreenChange); // Safari
+                // document.addEventListener('mozfullscreenchange', onFullscreenChange); // Firefox
+                // document.addEventListener('MSFullscreenChange', onFullscreenChange); // IE/Edge
+
+            }
+
+            function initPlayer2() {
+                // Listen for error events.
+                window.addEventListener('error', onErrorEvent);
+            }
+
+            function createVideoElement() {
+                const videoContainer = document.getElementById('videoContainer');
+                videoContainer.innerHTML = ''; // 비디오 컨테이너를 초기화
+
+                const video = document.createElement('video');
+                video.id = 'videoPlayer';
+                video.controls = true;
+                video.autoplay = true;
+                video.muted = false;
+
+                videoContainer.appendChild(video);
+                videoContainer.style.display = 'block'; // 비디오 컨테이너를 표시
+                return video;
+            }
+
+            function loadVideo2(videoUrl) {
+                console.log("Loading video from URL:", videoUrl); // 추가 로그
+
+                const videoContainer = document.getElementById('videoContainer');
+                const video = createVideoElement();
+                const player = new shaka.Player(video);
+
+                window.player = player;
+
+                player.addEventListener('error', onErrorEvent);
+
+                // 매니페스트를 로드합니다.
+                try {
+                    player.load(videoUrl).then(function () {
+                        console.log('The video has now been loaded!');
+                        video.play();
+
+                        // 비디오 재생 시작 시 전체화면 모드로 전환합니다.
+                        if (!document.fullscreenElement) {
+                            videoContainer.requestFullscreen().catch(err => {
+                                console.log(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+                            });
+                        }
+                    }).catch(function (error) {
+                        console.error('Error during player.load:', error);
+                        onError(error);
+                    });
+                } catch (e) {
+                    console.error('Error during player.load try-catch:', e);
+                    onError(e);
+                }
+            }
+
+
+            function onFullscreenChange() {
+                console.log('Fullscreen change event triggered');
+                const videoContainer = document.getElementById('videoContainer');
+                if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement) {
+                    videoContainer.style.display = 'none'; // 전체화면에서 나가면 비디오 컨테이너를 숨깁니다.
+                    videoContainer.innerHTML = ''; // 비디오 요소를 제거합니다.
+                }
+            }
+
+            function onErrorEvent(event) {
+                // Extract the shaka.util.Error object from the event.
+                onError(event.detail);
+            }
+
+            function onError(error) {
+                // Log the error.
+                // Log the error with additional information
+                console.error('Error code', error.code, 'object', error);
+
+                if (error.code === 7002) {
+                    console.error('Manifest loading error. Please check the manifest URL and CORS settings.');
+                } else if (error.code === 7000) {
+                    console.error('Network request failure. Please check the network connection.');
+                } else {
+                    console.error('An unknown error occurred.');
+                }
             }
         }
 
-
-        function onFullscreenChange() {
-            console.log('Fullscreen change event triggered');
-            const videoContainer = document.getElementById('videoContainer');
-            if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement) {
-                videoContainer.style.display = 'none'; // 전체화면에서 나가면 비디오 컨테이너를 숨깁니다.
-                videoContainer.innerHTML = ''; // 비디오 요소를 제거합니다.
-            }
-        }
-
-        function onErrorEvent(event) {
-            // Extract the shaka.util.Error object from the event.
-            onError(event.detail);
-        }
-
-        function onError(error) {
-            // Log the error.
-            // Log the error with additional information
-            console.error('Error code', error.code, 'object', error);
-
-            if (error.code === 7002) {
-                console.error('Manifest loading error. Please check the manifest URL and CORS settings.');
-            } else if (error.code === 7000) {
-                console.error('Network request failure. Please check the network connection.');
-            } else {
-                console.error('An unknown error occurred.');
-            }
-        }
-    });
+    )
+        ;
 </script>
