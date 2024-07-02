@@ -126,29 +126,96 @@ public class MyListService {
     }
 
     //openai
-    public String getOpenAi() {
+    public List<Content> getOpenAi() {
         List<WatchingHistory> watchingHistories = watchingHistoryRepository.findByUserId(2);
         List<Content> contents = contentRepository.findAll();
         List<MyListRequest.WatchingHistoryDTO> watchingHistoryRequest = watchingHistories.stream().map(MyListRequest.WatchingHistoryDTO::new).toList();
         List<MyListRequest.ContentDTO> contentRequest = contents.stream().map(MyListRequest.ContentDTO::new).toList();
 
         // Convert the requests to JSON strings
-        String watchingHistoryJson;
-        String contentJson;
+        String watchingHistoryJson = null;
+        String contentJson = null;
         try {
             watchingHistoryJson = objectMapper.writeValueAsString(watchingHistoryRequest);
             contentJson = objectMapper.writeValueAsString(contentRequest);
         } catch (JsonProcessingException e) {
             e.printStackTrace(); // 예외 스택 트레이스를 출력하여 디버깅 정보를 얻습니다.
-            return "error"; // 오류 발생 시 반환할 HTML 뷰의 이름
         }
 
         // Create the OpenAI request with the JSON strings
         String userMessage = String.format("Here is the watching history: %s. Based on this watching history and the available contents: %s, please recommend 5 movies and provide their ids and titles only.", watchingHistoryJson, contentJson);
-
-        return userMessage;
+        MyListRequest.OpenAIRequest openAIRequest = new MyListRequest.OpenAIRequest("gpt-3.5-turbo-0125", userMessage);
+        List<MyListResponse.ContentDTO> recommendedMovies = processOpenAIRequest(openAIRequest).getBody();
+        List<Content> responseDTO = new ArrayList<>();
+        for(MyListResponse.ContentDTO recommendedMovie:recommendedMovies){
+            Content content=contentRepository.findById(recommendedMovie.getId()).orElseThrow(() -> new Exception404("찾으시는 영화가 없습니다"));
+            responseDTO.add(content);
+        }
+        return responseDTO;
     }
+    //restapi 처리할거
+    public ResponseEntity<List<MyListResponse.ContentDTO>> processOpenAIRequest(MyListRequest.OpenAIRequest openAIRequest) {
+        try {
+            // 메시지 생성
+            ObjectNode messageNode = objectMapper.createObjectNode();
+            messageNode.put("role", "user");
+            messageNode.put("content", openAIRequest.getMessage());
 
+            // 요청 본문 생성
+            ObjectNode requestBodyNode = objectMapper.createObjectNode();
+            requestBodyNode.put("model", openAIRequest.getModel());
+            requestBodyNode.set("messages", objectMapper.createArrayNode().add(messageNode));
+
+            String requestBody = objectMapper.writeValueAsString(requestBodyNode);
+
+            // 요청 본문 출력 (디버깅용)
+            System.out.println("Request Body: " + requestBody);
+
+            // RestTemplate 인스턴스 생성
+            RestTemplate restTemplate = new RestTemplate();
+
+            // 헤더 설정
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setBearerAuth("");
+
+            // 요청 엔터티 생성
+            HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
+
+            // OpenAI API 호출
+            ResponseEntity<String> response = restTemplate.exchange(
+                    OPENAI_API_URL,
+                    HttpMethod.POST,
+                    entity,
+                    String.class
+            );
+
+            // 응답 본문 출력 (디버깅용)
+            System.out.println("Response Body: " + response.getBody());
+
+            // 응답 본문 파싱
+            String responseBody = response.getBody();
+            List<MyListResponse.ContentDTO> recommendedMovies = new ArrayList<>();
+            if (responseBody != null) {
+                // 응답 본문이 JSON 형식이 아닌 경우 텍스트 형식으로 처리
+                if (responseBody.startsWith("{")) {
+                    // JSON 형식인 경우
+                    recommendedMovies = parseRecommendedMovies(responseBody);
+                } else {
+                    // 텍스트 형식인 경우
+                    recommendedMovies = parseRecommendedMoviesFromText(responseBody);
+                }
+            }
+
+            // 추천 영화 목록 출력
+            recommendedMovies.forEach(movie -> System.out.println("Recommended Movie: " + movie));
+
+            return ResponseEntity.ok(recommendedMovies);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 
     //openai json 형식의 응답을 파싱
     List<MyListResponse.ContentDTO> parseRecommendedMovies(String responseBody) {

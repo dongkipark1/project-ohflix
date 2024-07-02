@@ -212,18 +212,15 @@
     </div>
     </section>
     <section class="margin-section" id="my-list-section">
-        <h2>내가 시청한 콘텐츠</h2>
+        <h2>AI 추천 콘텐츠</h2>
         <div class="movies">
             <div class="item-list">
                 {{#openAIRequest}}
-                    {{#content}}
-                        <div class="item content" data-content-id="{{id}}" data-progress="{{playedTime}}">
+                    {{#.}}
+                        <div class="item content" data-content-id="{{id}}">
                             <img src="{{thumbnail}}" alt="{{id}}">
-                            <div class="progress-bar-container">
-                                <div class="progress-bar"></div>
-                            </div>
                         </div>
-                    {{/content}}
+                    {{/.}}
                 {{/openAIRequest}}
 
             </div>

@@ -30,50 +30,6 @@ public class MyListRequest {
         private Integer contentId;
         private WatchOrFav watchOrFav;
     }
-//    @Data
-//    public static class OpenAiQuestDTO{
-//        private List<WatchingHistoryDTO> watchingHistory;
-//        private List<ContentDTO> contents;
-//
-//        public OpenAiQuestDTO(List<WatchingHistory> watchingHistory, List<Content> contents) {
-//            this.watchingHistory = watchingHistory.stream().map(WatchingHistoryDTO::new).toList();
-//            this.contents = contents.stream().map(ContentDTO::new).toList();
-//        }
-//
-//        @Data
-//        public static class WatchingHistoryDTO {
-//
-//            private Integer id;
-//
-//            private String contentTitle;
-//
-//            private Double playedTime;
-//
-//            private Timestamp createdAt;
-//
-//            public WatchingHistoryDTO(WatchingHistory watchingHistory) {
-//                this.id = watchingHistory.getId();
-//                this.contentTitle = watchingHistory.getContent().getTitle();
-//                this.playedTime = watchingHistory.getPlayedTime();
-//                this.createdAt = watchingHistory.getCreatedAt();
-//            }
-//        }
-//
-//        @Data
-//        public static class ContentDTO {
-//
-//            private Integer id;
-//
-//            private String contentTitle;
-//
-//            public ContentDTO(Content content) {
-//                this.id = content.getId();
-//                this.contentTitle = content.getTitle();
-//            }
-//
-//        }
-//    }
-
     //openai 보낼 영화기록 데이터
     @Data
     public static class WatchingHistoryDTO {
@@ -126,6 +82,7 @@ public class MyListRequest {
         }
 
     }
+
 
 
 }
