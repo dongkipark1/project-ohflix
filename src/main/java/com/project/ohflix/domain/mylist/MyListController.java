@@ -1,28 +1,18 @@
 package com.project.ohflix.domain.mylist;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.ObjectCodec;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.project.ohflix._core.utils.ApiUtil;
 import com.project.ohflix.domain.content.Content;
-import com.project.ohflix.domain.profileIcon.ProfileIcon;
 import com.project.ohflix.domain.user.SessionUser;
 import com.project.ohflix.domain.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Profile;
-import org.springframework.http.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 @Controller
@@ -47,7 +37,15 @@ public class MyListController {
     @GetMapping("/api/my-favorite-list")
     public String getMyFavList(HttpServletRequest request) {
         SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
-        MyListResponse.MyListDTO respDTO = myListService.findMyListById(sessionUser.getId());
+        SessionUser sessionAdmin = (SessionUser) session.getAttribute("sessionAdmin");
+        Integer userId = null;
+        if (sessionAdmin != null) {
+            userId = sessionAdmin.getId();
+        }
+        if (sessionUser!= null) {
+            userId = sessionUser.getId();
+        }
+        MyListResponse.MyListDTO respDTO = myListService.findMyListById(userId);
         List<Content> openAIRequest =myListService.getOpenAi();
         System.out.println("openAIRequest = " + openAIRequest);
         request.setAttribute("MyListDTO", respDTO);
@@ -60,7 +58,15 @@ public class MyListController {
     @PostMapping("/api/users/{contentId}/favorite")
     public ResponseEntity<?> addFavorite(@PathVariable int contentId, MyListRequest.AddFavoriteDTO reqDTO) {
         SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
-        reqDTO.setUserId(sessionUser.getId());
+        SessionUser sessionAdmin = (SessionUser) session.getAttribute("sessionAdmin");
+        Integer userId = null;
+        if (sessionAdmin != null) {
+            userId = sessionAdmin.getId();
+        }
+        if (sessionUser != null) {
+            userId = sessionUser.getId();
+        }
+        reqDTO.setUserId(userId);
         reqDTO.setContentId(contentId);
 
         myListService.addFavorite(reqDTO);
@@ -72,7 +78,15 @@ public class MyListController {
     @PostMapping("/api/users/{contentId}/unfavorite")
     public ResponseEntity<?> removeFavorite(@PathVariable int contentId, MyListRequest.RemoveFavoriteDTO reqDTO) {
         SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
-        reqDTO.setUserId(sessionUser.getId());
+        SessionUser sessionAdmin = (SessionUser) session.getAttribute("sessionAdmin");
+        Integer userId = null;
+        if (sessionAdmin != null) {
+            userId = sessionAdmin.getId();
+        }
+        if (sessionUser != null) {
+            userId = sessionUser.getId();
+        }
+        reqDTO.setUserId(userId);
         reqDTO.setContentId(contentId);
 
         myListService.removeFavorite(reqDTO);

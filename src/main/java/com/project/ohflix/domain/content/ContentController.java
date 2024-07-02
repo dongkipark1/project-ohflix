@@ -16,12 +16,20 @@ import java.util.List;
 public class ContentController {
     private final ContentService contentService;
     private final MyListService myListService;
-    private final HttpSession httpSession;
+    private final HttpSession session;
 
     @GetMapping("/api/latest-content")
     public String getLatest(HttpServletRequest request) {
-        SessionUser sessionUser = (SessionUser) httpSession.getAttribute("sessionUser");
-        ContentResponse.LatestContentDTO respDTOList = contentService.findLatestContent(sessionUser.getId());
+        SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
+        SessionUser sessionAdmin = (SessionUser) session.getAttribute("sessionAdmin");
+        Integer userId = null;
+        if (sessionAdmin != null) {
+            userId = sessionAdmin.getId();
+        }
+        if (sessionUser != null) {
+            userId = sessionUser.getId();
+        }
+        ContentResponse.LatestContentDTO respDTOList = contentService.findLatestContent(userId);
         request.setAttribute("latestContentDTO", respDTOList);
 
         return "content/latest-content";
@@ -49,16 +57,24 @@ public class ContentController {
     public ResponseEntity<?> savePlayedTime(@RequestBody ContentRequest.VideoProgressDTO videoProgressDTO) {
         System.out.println("videoProgressDTO = " + videoProgressDTO);
         System.out.println("Saved time: " + videoProgressDTO.getCurrentTime());  // 저장된 시간을 콘솔에 출력
-        SessionUser sessionUser = (SessionUser) httpSession.getAttribute("sessionUser");
-        myListService.savePlayedTime(videoProgressDTO, sessionUser.getId());
+        SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
+        SessionUser sessionAdmin = (SessionUser) session.getAttribute("sessionAdmin");
+        Integer userId = null;
+        if (sessionAdmin != null) {
+            userId = sessionAdmin.getId();
+        }
+        if (sessionUser != null) {
+            userId = sessionUser.getId();
+        }
+        myListService.savePlayedTime(videoProgressDTO, userId);
         return ResponseEntity.ok().build();
     }
 
     //시청한 영화 시간 가져오기
     @GetMapping("/api/video/current-time")
     public ResponseEntity<?> getVideoCurrentTime(@RequestParam("filename") String filename) {
-        SessionUser sessionUser = (SessionUser) httpSession.getAttribute("sessionUser");
-        SessionUser sessionAdmin = (SessionUser) httpSession.getAttribute("sessionAdmin");
+        SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
+        SessionUser sessionAdmin = (SessionUser) session.getAttribute("sessionAdmin");
         Integer userId = null;
         if (sessionAdmin != null) {
             userId = sessionAdmin.getId();

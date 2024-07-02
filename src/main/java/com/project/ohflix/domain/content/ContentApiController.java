@@ -19,8 +19,16 @@ public class ContentApiController {
     // 메인페이지 모달 영화 정보 가져오기
     @GetMapping("/api/content-info/{contentId}")
     public ResponseEntity<?> getContentInfo(@PathVariable Integer contentId){
-        SessionUser sessionUser = (SessionUser)session.getAttribute("sessionUser");
-        ContentResponse.MainContent respDTO= contentService.getMainContent(sessionUser.getId(), contentId);
+        SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
+        SessionUser sessionAdmin = (SessionUser) session.getAttribute("sessionAdmin");
+        Integer userId = null;
+        if (sessionAdmin != null) {
+            userId = sessionAdmin.getId();
+        }
+        if (sessionUser!= null) {
+            userId = sessionUser.getId();
+        }
+        ContentResponse.MainContent respDTO= contentService.getMainContent(userId, contentId);
         return ResponseEntity.ok(new ApiUtil<>(respDTO));
     }
 }

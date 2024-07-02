@@ -1,14 +1,11 @@
 package com.project.ohflix.domain.purchaseHistory;
 
-import com.project.ohflix._core.error.exception.Exception404;
-import com.project.ohflix.domain._enums.Paymethod;
 import com.project.ohflix.domain.cardInfo.CardInfoResponse;
 import com.project.ohflix.domain.cardInfo.CardInfoService;
 import com.project.ohflix.domain.content.ContentRepository;
 import com.project.ohflix.domain.content.ContentResponse;
 import com.project.ohflix.domain.content.ContentService;
 import com.project.ohflix.domain.user.SessionUser;
-import com.project.ohflix.domain.user.User;
 import com.project.ohflix.domain.user.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -17,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -82,7 +78,15 @@ public class PurchaseHistoryController {
     public String accountSecurity(HttpServletRequest request) {
         // accountSecurityPage 데이터 바인딩
         SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
-        PurchaseHistoryResponse.AccountSecurityDTO respDTO = purchaseHistoryService.accountSecurityPage(sessionUser.getId());
+        SessionUser sessionAdmin = (SessionUser) session.getAttribute("sessionAdmin");
+        Integer userId = null;
+        if (sessionAdmin != null) {
+            userId = sessionAdmin.getId();
+        }
+        if (sessionUser != null) {
+            userId = sessionUser.getId();
+        }
+        PurchaseHistoryResponse.AccountSecurityDTO respDTO = purchaseHistoryService.accountSecurityPage(userId);
         request.setAttribute("AccountSecurityDTO", respDTO);
 
         return "account/account-security";
@@ -92,8 +96,8 @@ public class PurchaseHistoryController {
     @GetMapping("/admin/content-update-link")
     public String contentUpdateLink(HttpServletRequest request) {
         // contentUpdateLinkPage 데이터 바인딩
-        SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
-        ContentResponse.ContentUpdateLinkPageDTO respDTO = contentService.contentUpdateLinkPageDTO(sessionUser.getId());
+        SessionUser sessionAdmin = (SessionUser) session.getAttribute("sessionAdmin");
+        ContentResponse.ContentUpdateLinkPageDTO respDTO = contentService.contentUpdateLinkPageDTO(sessionAdmin.getId());
         request.setAttribute("ContentUpdateLinkDTO", respDTO);
 
         return "admin/content-update-link";
