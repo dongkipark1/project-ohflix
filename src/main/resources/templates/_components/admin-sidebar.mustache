@@ -1,0 +1,30 @@
+<div class="sidebar">
+    <a href="/api/main-page">
+        <div class="main-left-text">
+            <i class="fa-solid fa-arrow-left main-left-icon"></i>오플릭스로 돌아가기
+        </div>
+    </a>
+    <ul class="custom-list">
+        <li id="account-view"><a href="/admin/admin-upload"><i class="fa-solid fa-upload sidebar-icon"></i>영삽 업로드</a></li>
+        <li id="account-membership"><a href="/api/video-manage"><i class="fa-solid fa-photo-film sidebar-icon"></i>영상 관리</a></li>
+        <li id="account-security"><a href="/admin/members-manage"><i class="fa-solid fa-users-gear sidebar-icon"></i>회원 관리</a>
+        </li>
+        <li id="profile-setting"><a href="/admin/refund-manage"><i class="fa-solid fa-comment-dots sidebar-icon"></i>멤버십 해지 요청</a>
+        </li>
+        <li id="profile-setting"><a href="/admin/sales-page"><i class="fa-solid fa-chart-line sidebar-icon"></i>매출 관리</a>
+        </li>
+    </ul>
+</div>
+<!-- 사이드바 현재 위치 표시 백그라운드 -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var currentUrl = window.location.pathname;
+        var links = document.querySelectorAll(".custom-list li a");
+
+        links.forEach(function (link) {
+            if (link.getAttribute("href") === currentUrl) {
+                link.parentElement.style.backgroundColor = "#ddd";  // 버튼의 배겨을 #ddd로
+            }
+        });
+    });
+</script>

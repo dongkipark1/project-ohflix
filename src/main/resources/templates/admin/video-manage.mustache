@@ -3,82 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>영상 관리</title>
     <link rel="stylesheet" href="/static/css/reset.css">
     <link rel="stylesheet" href="/static/css/video-manage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <!-- 파비콘 ( 아이콘 ) -->
+    <link rel="icon" href="/static/images/OH!.ico">
+    <title>관리자 페이지 - 영상 관리</title>
 </head>
 <body>
+<!-- 네비게이션 바 -->
 <nav>
     <div class="nav-div">
-        <img src="/static/images/OH!FLIX.png" alt="Logo" class="nav-logo">
-        <div class="profile">
-            <img src="/static/images/netflix-profile.png" alt="프로필" class="nav-profile">
-            <button class="dropdown-button">
-                <span class="dropdown-icon">▼</span>
-                <div class="dropdown-content">
-                    <a href="#">키즈</a>
-                    <a href="#">프로필 관리</a>
-                    <a href="#">프로필 이전</a>
-                    <a href="#">계정</a>
-                    <a href="#">고객 센터</a>
-                </div>
-            </button>
+        <div>
+            <a href="/api/main-page">
+                <img src="/static/images/OH!FLIX.png" alt="오류" class="nav-logo"/>
+            </a>
+        </div>
+        <div class="logout">
+            <a href="/logout">로그아웃</a>
         </div>
     </div>
 </nav>
-<div class="container">
-    <div class="sidebar">
-        <a href="/api/main-page">
-        <div class="sidebar-header">
-            <i class="fa-solid fa-arrow-left main-left-icon"></i>오플릭스로
-            돌아가기
-        </div>
-        </a>
-        <ul class="sidebar-menu">
-            <a href="/admin/admin-upload">
-                <li><i class="fa-solid fa-upload"></i>영상 업로드</li>
-            </a>
 
-            <a href="/api/video-manage">
-                <li><i class="fa-solid fa-photo-film"></i>영상 관리</li>
-            </a>
+<main>
+    <div class="main-div">
+        <!-- 사이드 바 메뉴 -->
+        {{> /_components/admin-sidebar}}
+        <div class="main-section">
+            <h1 class="main-title">영상 목록</h1>
 
-            <a href="/admin/members-manage">
-                <li><i class="fa-solid fa-users-gear"></i>회원 관리</li>
-            </a>
-
-            <a href="/admin/refund-manage">
-                <li><i class="fa-solid fa-comment-dots"></i>멤버십 해지 요청</li>
-            </a>
-
-            <a href="/admin/sales-page">
-                <li><i class="fa-solid fa-chart-line"></i>매출 관리</li>
-            </a>
-        </ul>
-    </div>
-
-    <div class="main-content">
-        <h1 class="main-title">영상 목록</h1>
-
-        <div class="card-container">
-            {{#VideoManagePageDTO}}
-                {{#videoDTO}}
-                    <div class="card">
-                        <img src="{{thumbnail}}" alt="영상 썸네일">
-                        <div class="card-content">
-                            <h3>{{title}}</h3>
-                            <div class="card-buttons">
-                                <button class="detail-button">상세보기</button>
-                                <button class="delete-button">삭제</button>
+            <div class="card-container">
+                {{#VideoManagePageDTO}}
+                    {{#videoDTO}}
+                        <div class="card">
+                            <img src="{{thumbnail}}" alt="영상 썸네일">
+                            <div class="card-content">
+                                <h3>{{title}}</h3>
+                                <div class="card-buttons">
+                                    <button class="detail-button">상세보기</button>
+                                    <button class="delete-button">삭제</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                {{/videoDTO}}
-            {{/VideoManagePageDTO}}
+                    {{/videoDTO}}
+                {{/VideoManagePageDTO}}
+            </div>
         </div>
-
     </div>
-</div>
+</main>
 </body>
 </html>
