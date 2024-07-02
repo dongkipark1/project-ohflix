@@ -41,7 +41,7 @@
         <div class="logo"><img src="/static/images/OH!FLIX.png" alt="로고 이미지"></div>
     </a>
     <nav>
-        <ul>
+        <ul class="left-menu">
             <li><a href="/api/main-page">홈</a></li>
             <li><a href="/api/main-page">영화</a></li>
             <li><a href="/api/latest-content">최신 콘텐츠</a></li>
@@ -78,13 +78,14 @@
         <div class="dropdown">
             <button class="dropdown-button"><img src={{MainPageDTO.profileIcon.path}} alt="Profile"/></button>
             <div class="dropdown-content">
-                <a href="/api/profile-form"><i class="material-icons">edit</i> 프로필 관리</a>
+                <a href="/api/profile-form"><i class="material-icons">edit</i>프로필 관리</a>
                 <a href="/api/account-view"><i class="material-icons">account_circle</i> 계정</a>
-                <!--                <a href="#"><i class="material-icons">help_outline</i> 고객 센터</a>-->
+<!--                <a href="#"><i class="material-icons">help_outline</i> 고객 센터</a>-->
                 {{#sessionAdmin}}
-                    <a href="/admin/sales-page"><i class="material-icons">help_outline</i> 관리자 모드</a>
+                    <a href="/admin/sales-page"><span class="material-icons">manage_accounts</span>관리자 모드</a>
                 {{/sessionAdmin}}
-                <a href="/logout">넷플릭스에서 로그아웃</a>
+                <hr>
+                <a href="/logout"><span class="material-icons">logout</span>오플릭스 로그아웃</a>
             </div>
         </div>
         <!--  프로필 드롭 다운 메뉴 종료  -->
@@ -167,18 +168,18 @@
             <div class="swiper-button-prev"></div>
         </div>
         <!-- swiper 스크립트 -->
-<!--        <script>-->
-<!--            var swiper = new Swiper(".mySwiper", {-->
-<!--                slidesPerView: 5,   // 화면에 보일 아이템 수-->
-<!--                slidesPerGroup: 5,  // 한 번에 넘길 아이템 수-->
-<!--                spaceBetween: 5,    // 간격-->
-<!--                loop: true,         // 무한 루프-->
-<!--                navigation: {-->
-<!--                    nextEl: ".swiper-button-next",-->
-<!--                    prevEl: ".swiper-button-prev",-->
-<!--                },-->
-<!--            });-->
-<!--        </script>-->
+        <!--        <script>-->
+        <!--            var swiper = new Swiper(".mySwiper", {-->
+        <!--                slidesPerView: 5,   // 화면에 보일 아이템 수-->
+        <!--                slidesPerGroup: 5,  // 한 번에 넘길 아이템 수-->
+        <!--                spaceBetween: 5,    // 간격-->
+        <!--                loop: true,         // 무한 루프-->
+        <!--                navigation: {-->
+        <!--                    nextEl: ".swiper-button-next",-->
+        <!--                    prevEl: ".swiper-button-prev",-->
+        <!--                },-->
+        <!--            });-->
+        <!--        </script>-->
     </section>
     <!-- Top10 영화 섹션 종료 -->
 
@@ -188,7 +189,7 @@
         <div class="swiper mySwiper">
             <div class="swiper-wrapper">
                 {{#MainPageDTO.newList}}
-                    <div class="swiper-slide content-list" >
+                    <div class="swiper-slide content-list">
                         <div class="content" data-content-id="{{newId}}">
                             <img src="{{newThumbnail}}" alt="new_01"/>
                         </div>
@@ -264,17 +265,13 @@
         <a href="#"><i class="fa-brands fa-youtube"></i></a>
     </div>
     <div class="footer-info">
-        <p>
-            넷플릭스서비시스코리아 유한회사 통신판매업신고번호:
-            제2018-서울종로-0426호 전화번호: 00-308-321-0161 (수신자 부담)
-        </p>
-        <p>대표: 레지널드 숀 톰프슨</p>
+        <p>오플릭스서비시스코리아 유한회사 통신판매업신고번호:
+            제2023-부산진구-0703호 전화번호: 000-111-2222 (수신자 부담)</p>
+        <p>대표: 스티븐 성훈 킴</p>
         <p>이메일 주소: korea@netflix.com</p>
-        <p>
-            주소: 대한민국 서울특별시 종로구 우정국로 26, 센트로폴리스 A동 20층
-            우편번호 03161
-        </p>
-        <p>사업자등록번호: 165-87-00119</p>
+        <p>주소: 대한민국 부산광역시 부산진구 중앙대로 749 범향빌딩 3층
+            우편번호 03161</p>
+        <p>사업자등록번호: 000-111-2222</p>
         <p>클라우드 호스팅: Amazon Web Services Inc.</p>
     </div>
 </footer>

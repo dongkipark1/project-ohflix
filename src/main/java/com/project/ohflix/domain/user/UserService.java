@@ -122,16 +122,22 @@ public class UserService {
             saveSessionToRedis("sessionUser", userPS);
             return userPS;
         } else {
-            ProfileIcon profileIcon = profileIconRepository.findById(1).orElseThrow(() ->
-                    new Exception404("정보를 찾을 수 없습니다."));
             // 5. 없으면? - 강제 회원가입
             User user = User.builder()
+                    // 카카오에서 부여 - nickname
+                    // 카카오에서 이름 - response.getBody().getProperties().getNickname()
+                    .email(nickname + "@ohflix.com")
+                    .name(response.getBody().getProperties().getNickname())
                     .nickname(nickname)
                     .password(UUID.randomUUID().toString())
-                    .email(response.getBody().getProperties().getNickname() + "@ohflix.com")
-                    .profileIcon(profileIcon)
                     .provider("kakao")
                     .status(Status.USER)
+                    .profileIcon(ProfileIcon.builder().id(1).build())
+                    .userSaveRate(Rate.ALL)
+                    .isKids(false)
+                    .loginSave(false)
+                    .isAutoPlay(false)
+                    .isSubscribe(false)
                     .build();
             User returnUser = userRepository.save(user);
             saveSessionToRedis("sessionUser", returnUser);
@@ -327,13 +333,13 @@ public class UserService {
 
     // 회원가입 signUp
     @Transactional
-    public UserResponse.SignupDTO Signup(UserRequest.SignupDTO reqDTO) {
+    public UserResponse.SignupDTO signup(UserRequest.SignupDTO reqDTO) {
 
         String hashedPassword = BCrypt.hashpw(reqDTO.getPassword(), BCrypt.gensalt());
 
         User user = User.builder()
                 .email(reqDTO.getEmail())
-                .password(reqDTO.getPassword())
+                .password(hashedPassword)
                 .nickname(reqDTO.getNickname())
                 .status(Status.USER)
                 .profileIcon(ProfileIcon.builder().id(1).build())
