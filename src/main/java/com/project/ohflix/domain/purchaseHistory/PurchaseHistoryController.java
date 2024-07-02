@@ -28,6 +28,14 @@ public class PurchaseHistoryController {
     private final ContentService contentService;
     private final CardInfoService cardInfoService;
 
+    @GetMapping("/api/membership/payment")
+    public String membershipPayment(HttpServletRequest request) {
+        SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
+        List<CardInfoResponse.paymethodManageDTO> respDTO = purchaseHistoryService.paymethodManagePage(sessionUser.getId());
+        request.setAttribute("paymethodManageDTO", respDTO);
+        return "paymethod/membership-pay-form";
+    }
+
     @GetMapping("/api/paymethod-form")
     public String getPaymethodRegisterForm() {
         return "paymethod/paymethod-register-form";
@@ -73,7 +81,8 @@ public class PurchaseHistoryController {
     @GetMapping("/admin/content-update-link")
     public String contentUpdateLink(HttpServletRequest request) {
         // contentUpdateLinkPage 데이터 바인딩
-        ContentResponse.ContentUpdateLinkPageDTO respDTO = contentService.contentUpdateLinkPageDTO(1);
+        SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
+        ContentResponse.ContentUpdateLinkPageDTO respDTO = contentService.contentUpdateLinkPageDTO(sessionUser.getId());
         request.setAttribute("ContentUpdateLinkDTO", respDTO);
 
         return "admin/content-update-link";
