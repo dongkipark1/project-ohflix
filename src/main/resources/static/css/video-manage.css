@@ -165,60 +165,6 @@ nav {
     background-color: #E2E2E2; /* 커서를 가져다댔을 때 어두워지는 효과 */
 }
 
-.sidebar {
-    width: 25%;
-    background-color: #FAFAFA;
-    color: black;
-    padding: 20px;
-    height: calc(100vh - 60px);
-    border: none;
-}
-
-.sidebar-header {
-    margin-bottom: 20px;
-    text-align: left;
-    margin-left: 60%;
-    margin-top: 5%;
-    padding: 15px 0;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-.sidebar-header i {
-    margin-right: 10px;
-}
-
-.sidebar-header:hover {
-    background-color: #E2E2E2;
-    color: #000;
-}
-
-
-.sidebar-menu {
-    list-style: none;
-    padding: 0;
-    margin-top: 10%;
-    margin-left: 60%;
-}
-
-.sidebar-menu li {
-    padding: 10px 0;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-    margin-bottom: 10px;
-}
-
-.sidebar-menu li:hover {
-    background-color: #E2E2E2;
-    color: #000;
-}
-
-.sidebar-menu i {
-    margin-right: 10px;
-}
-
 /* """"""""""""""""""""""""""""""main-content"""""""""""""""""""""""""""""" */
 /*.main-content {*/
 /*    flex: 1;*/
