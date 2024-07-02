@@ -15,6 +15,7 @@ import com.project.ohflix.domain.user.UserRepository;
 import com.project.ohflix.domain.watchingHistory.WatchingHistory;
 import com.project.ohflix.domain.watchingHistory.WatchingHistoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +37,9 @@ public class MyListService {
     private final WatchingHistoryRepository watchingHistoryRepository;
     private final String OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
     private final ObjectMapper objectMapper;
+
+    @Value("${custom.openai.key}")
+    private String openaiKey;
 
 
     @Transactional
@@ -177,7 +181,7 @@ public class MyListService {
             // 헤더 설정
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.setBearerAuth("");
+            headers.setBearerAuth(openaiKey);
 
             // 요청 엔터티 생성
             HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
