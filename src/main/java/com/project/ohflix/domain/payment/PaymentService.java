@@ -77,6 +77,7 @@ public class PaymentService {
 
         purchaseHistory.setServicePeriod(startDate + "~" + endDate); // 서비스 기간 파싱
 
+        user.updateIsSubscribe();
 
         return purchaseHistoryRepository.save(purchaseHistory);
     }
