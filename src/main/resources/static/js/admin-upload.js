@@ -10,7 +10,11 @@ document.getElementById('image-upload1').addEventListener('change', function () 
     document.getElementById('file-name2').textContent = fileName;
 });
 
-
+// 썸네일
+document.getElementById('image-upload2').addEventListener('change', function () {
+    var fileName = this.files[0] ? this.files[0].name : '선택된 파일 없음';
+    document.getElementById('file-name3').textContent = fileName;
+});
 // 대표 사진
 document.getElementById('image-upload3').addEventListener('change', function () {
     var fileName = this.files[0] ? this.files[0].name : '선택된 파일 없음';

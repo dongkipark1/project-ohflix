@@ -116,7 +116,6 @@ INSERT INTO content_tb (
 
 
 
-
 -- 생성 순서 : 5번, 결재 내역 정보 더미
 INSERT INTO purchase_history_tb (card_info_id, user_id, description, service_period, paymethod, amount, created_at)
 VALUES
@@ -133,6 +132,11 @@ VALUES
     (5, 5, '스트리밍 서비스', '2024-06-14~2024-07-13', 'KAKAOPAY', 13500, '2024-06-14 08:30:00'),
     (5, 5, '스트리밍 서비스', '2024-05-14~2024-06-13', 'KAKAOPAY', 13500, '2024-05-14 11:45:00');
 
+INSERT INTO content_tb (
+    real_play_time, title, thumbnail, video_path, main_photo, poster_photo, text_photo,director, introduction,
+    characteristic, play_time, product_year, writers, actors, view_count, rate, genre, created_at
+) VALUES
+    (102, '스파이더맨 : 홈커밍','/static/images/movie/home_coming/thumbnail.webp', 'videolocation/home_coming/home_coming.mpd', '/static/images/movie/home_coming/main_photo.webp', '/static/images/movie/home_coming/poster_photo.jpg', '/static/images/movie/home_coming/text_photo.webp', '존 왓츠', '톰 홀랜드와 로버트 다우니 주니어가 출연하는 2017년 슈퍼 히어로 영화. 마블 코믹스의 대표적인 캐릭터를 바탕으로 만들었다.','달상상의 나라, 긴장감 넘치는, 흥미진진', '2시간 13분', '2017', '조너선 골드스타인, 존 프랜시스 데일리, 존 왓츠, 크리스토퍼 포드, 크리스 맥케나, 에릭 소머스', '톰 홀랜드, 마이클 키튼, 로버트 다우니 주니어, 머리사 토메이, 존 패브로, 케네스 챈트로, 젠데이아, 도널드 글로버, 제이컵 배틀론',10, 'PG', 'ACTION',NOW());
 
 --- 생성 순서 : 6번, mylist 테이블
 INSERT INTO mylist_tb (user_id, content_id, played_time, watch_or_fav, created_at)
@@ -141,7 +145,13 @@ VALUES
 --     (1, 2, 0, 'WATCHING', NOW()),
 --     (1, 3, 0, 'FAVORITE', NOW()),
     (2, 1, 0, 'FAVORITE', NOW()),
-    (2, 1, 25, 'WATCHING', NOW());
+    (2, 47, 50, 'WATCHING', NOW()),
+    (2, 30, 20, 'WATCHING', NOW()),
+    (2, 20, 20, 'WATCHING', NOW()),
+    (2, 47, 0, 'FAVORITE', NOW()),
+    (2, 35, 0, 'FAVORITE', NOW());
+
+
 
 
 --- 생성 순서 : 7번, 환불요청 테이블
@@ -154,4 +164,10 @@ INSERT INTO refund_tb (user_id, reason, status, purchased_date, refuse_message, 
 --- 생성 순서 : 8번, watchingHistory 테이블
 INSERT INTO watching_history_tb (user_id, content_id, played_time, created_at)
 VALUES
-    (2, 1, 50, NOW());
+    (2, 1, 50, NOW()),
+    (2, 10, 120, NOW()),
+    (2, 20, 50, NOW()),
+    (2, 30, 100, NOW()),
+    (2, 40, 120, NOW());
+
+
