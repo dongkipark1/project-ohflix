@@ -1,4 +1,4 @@
-# 🚀 "ROPA" - 2조 파이널 프로젝트
+# 🚀 "OHFLIX" - 영상 스트리밍 플랫폼
 
 
 <p align="center">
@@ -9,15 +9,15 @@
 
 <br>
 
-# 👉 코디 아이템 중개 플랫폼
-> ### 개발기간: 2024.04.17 ~ 2024.05.22
+# 👉 영상 스트리밍 플랫폼
+> ### 개발기간: 2024.06.12 ~ 2024.07.03
 
 <br>
 
 # 👉 배포 주소
   
-> #### 백엔드 서버 : [https://github.com/chugue/ropa-admin](https://github.com/chugue/ropa-admin)<br>
-> #### 프론트 서버 : [https://github.com/chugue/ropa-flutter-project](https://github.com/chugue/ropa-flutter-project)<br>
+> #### 백엔드 서버 : [https://github.com/chugue/ropa-admin](https://github.com/chugue/ropa-admin)](https://github.com/chugue/project-ohflix)<br>
+> #### 영상 서버     : [https://github.com/chugue/ropa-flutter-project](https://github.com/chugue/ropa-flutter-project)](https://github.com/chugue/video-server)<br>
 <br>
 
 # 👉 개발팀 소개
@@ -26,10 +26,10 @@
 <table style="width:100%; text-align:center;">
   <tr>
     <th style="text-align:center;">김성훈(팀장)</th>
-    <th style="text-align:center;">김주혁(프론트)</th>
-    <th style="text-align:center;">양승호(프론트)</th>
-    <th style="text-align:center;">김완준(백엔드)</th>
-    <th style="text-align:center;">박선규(백엔드)</th>
+    <th style="text-align:center;">박동기</th>
+    <th style="text-align:center;">공지영</th>
+    <th style="text-align:center;">양승호</th>
+    <th style="text-align:center;">최윤정</th>
   </tr>
   <tr>
     <td style="text-align:center; vertical-align:middle;"><img width="160px" src="https://avatars.githubusercontent.com/u/30003848?v=4" /></td>
