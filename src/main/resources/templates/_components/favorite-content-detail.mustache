@@ -323,7 +323,7 @@
             if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement && videoContainer) {
                 videoContainer.style.display = 'none'; // 전체화면에서 나가면 비디오 컨테이너를 숨깁니다.
                 videoContainer.innerHTML = ''; // 비디오 요소를 제거합니다.
-                if (videoPlayer) {
+                if (videoPlayer2) {
                     const currentTime = videoPlayer2.currentTime;
                     const filename = videoPlayer2.getAttribute('data-filename'); // data-filename 속성 사용
                     console.log('Saving current time:', currentTime); // 현재 시간을 콘솔에 출력
