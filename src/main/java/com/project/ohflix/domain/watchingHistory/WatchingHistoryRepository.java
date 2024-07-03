@@ -15,7 +15,8 @@ public interface WatchingHistoryRepository extends JpaRepository<WatchingHistory
             JOIN FETCH w.user wu
             JOIN FETCH wu.profileIcon wup
             JOIN FETCH w.content wc
-            WHERE wu.id = :userId
+            ORDER BY w.createdAt DESC
+            
             """)
     List<WatchingHistory> findByUserId(@Param("userId") Integer userId);
 }

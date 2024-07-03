@@ -138,6 +138,12 @@ public class ContentService {
         List<Content> contents = contentRepository.findByTitleContaining(title);
         return contents.stream().map(ContentResponse.SearchResultDTO::new).toList();
     }
+
+    public ContentResponse.ContentDetailDTO getContentDetail(Integer id) {
+        Content content = contentRepository.findById(id).orElseThrow(() -> new Exception404("찾는 영화가 없습니다"));
+
+        return new ContentResponse.ContentDetailDTO(content);
+    }
 }
 
 

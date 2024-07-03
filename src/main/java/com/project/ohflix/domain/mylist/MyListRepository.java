@@ -26,6 +26,7 @@ public interface MyListRepository extends JpaRepository<MyList, Integer> {
             JOIN FETCH m.user u
             JOIN FETCH m.content c
             WHERE u.id = :id AND m.watchOrFav = 'WATCHING'
+            order by m.createdAt desc
             """)
     List<MyList> findMyWatchListByUserId(@Param("id") int id);
 
