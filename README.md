@@ -56,26 +56,27 @@
 > #### 영상을 DASH 프로토콜로 네트워크 상황에 따라 품질을 다르게 전송하여
 > #### 끊김이 없는 영상 서비스를 제공합니다.
 
+<br>
 
-<div style="display: grid; grid-template-columns: 1fr; gap: 10px;">
-  <div>
-    <img src="https://github.com/chugue/ropa-admin/assets/30003848/014532ae-1d72-4dcd-b99d-a6fc5dbccb51" alt="시연02" style="width: 100%; height: auto;"/>
-  </div>
-</div>
+
+| 시연영상 링크 ( 사진 클릭 👇👇) |
+|:---------------------------:|
+| [![시연02](https://img.youtube.com/vi/3YMpCAriG0Y/0.jpg)](https://www.youtube.com/watch?v=3YMpCAriG0Y) |
+
+
+<br>
+
+# 👉 오플릭스 PPT 발표자료
+[오플릭스 PPT - pdf](https://github.com/user-attachments/files/16082996/OHFLIX-PPT.pdf)
+
+<br>
 <br>
 
 # 👉 Stacks
 
-![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-007ACC?style=for-the-badge&logo=Visual%20Studio%20Code&logoColor=white)
-![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white)
-![HTML5](https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![BootStrap](https://img.shields.io/badge/bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
-![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
-![Spring](https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
-![Flutter](https://img.shields.io/badge/flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)
-![AmazonAWS](https://img.shields.io/badge/amazonaws-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white)
-![Gradle](https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white)
-![Dart](https://img.shields.io/badge/dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white)    ![Hibernate](https://img.shields.io/badge/Hibernate-59666C?style=for-the-badge&logo=Hibernate&logoColor=white)
+![기술스택](https://github.com/chugue/project-ohflix/assets/30003848/b169db7a-e2a7-46d2-9d6c-7eda6fe892d7)
+
+
 
 ### Communication
 
@@ -85,84 +86,40 @@
 <br>
 
 # 👉 Dependencies
-```
+```java
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-mustache'
-    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
-    implementation group: 'com.auth0', name: 'java-jwt', version: '4.3.0'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-aop'
-    implementation 'com.google.code.gson:gson:2.10.1'
-    implementation group: 'org.qlrm', name: 'qlrm', version: '4.0.1'
+    implementation 'com.github.iamport:iamport-rest-client-java:0.1.6' // iamport
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-mustache'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
-    runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    /////////// 추가 의존성 //////////
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+    implementation group: 'com.auth0', name: 'java-jwt', version: '4.3.0'
+    implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.4'
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation group: 'org.qlrm', name: 'qlrm', version: '4.0.1'
+    runtimeOnly 'com.mysql:mysql-connector-j'
     implementation 'commons-codec:commons-codec:1.15'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.session:spring-session-data-redis'
+    implementation 'io.github.cdimascio:java-dotenv:5.2.2'
 }
 ```
 
 <br>
 
 # 👉 테이블 설계
-![테이블 소개](https://github.com/chugue/ropa-admin/assets/30003848/275af45f-d141-44cb-a0dd-8cb45488dd8a)
+![ERD구조](https://github.com/chugue/project-ohflix/assets/30003848/2aebd0c4-c789-4a7a-8572-8e7b7adeb784)
 
-
-
-<br>
-
-# 👉 프로젝트 기능 정리
-
-> ### 1단계   (🟦: WEB, 🟨:APP)
-
-* #### 🟦 화면 구축
-* #### 🟨 화면 구축
-* #### 🟦 로그인 인터셉터 - 세션 기반
-* #### 🟨 로그인 인터셉터 - JWT 토큰 인증
-* #### 🟦 아이템 등록 구현
-* #### 🟨 크리에이터 지원하기
-* #### 🟦 크리에이터 지원자 조회 / 승인
-* #### 🟨 크리에이터 코디 등록
-* #### 🟨 크리에이터 코디 - 아이템 연결
-* #### 🟨 일반사용자 아이템 상세보기 / 구매
-* #### 🟦 브랜드 수수료 지급 로직 구현
-<br>
-
-
-> ### 2단계   (🟦: WEB, 🟨:APP)
-
-* #### 🟦 MultiPartFile 사진 CRUD 구현
-* #### 🟨 Base64 사진 CRUD 구현
-* #### 🟨 API 문서 작성 GitBook 활용
-* #### 🟦 검색어 검색 구현
-* #### 🟦 날짜 기간 검색 구현
-* #### 🟦 좋아요 기능 구현
-* #### 🟦 Exception Handler 구현
-* #### 🟦 AOP 구현
-* #### 🟦 장바구니 CRUD 구현
-* #### 🟨 ImagePicker 적용
-* #### 🟨 Dio 데이터 송수신 & 바인딩
-* #### 🟨 RiverPod을 활용한 MVVM패턴 적용
-* #### 🟨 Splash Screen / 자동로그인 구현
-<br>
-
-
-> ### 3단계 (🟦: WEB, 🟨:APP)
-
-* #### 🟦 단위 테스트 적용
-* #### 🟦 RestDoc API 문서 작성
-* #### 🟦 통합 테스트
-* #### 🟦 CI / CD 배포
-* #### 🟨 CopyWith 적용으로 코드 가독성 관리
-
-<br>
-
-# 👉 컨벤션 정리
-[코드 컨벤션 정리 링크](https://www.notion.so/stephenkiim/137f2114decc444bbf308520a340238e)
 
 <br>
 
@@ -171,6 +128,29 @@ dependencies {
 [팀 블로그 링크](https://www.notion.so/stephenkiim/23dafc6dac1649318bc1bc1ece61c2fd)
 
 <br>
+<br>
+
+# 👉 프로젝트 주요 기능 정리
+* #### Redis 세션 인증
+* #### 카카오 OAuth 인증
+* #### 로그인 인터셉터 - 세션 기반
+* #### 영상 CRUD 구현
+* #### DASH 프로토콜 영상 재생
+* #### 영상 암호화 패키징 - Shaka Packager
+* #### 인코딩 / 라이센스 서버 구축 (DRM)
+* #### 카카오 페이 결제
+* #### 아임포트 카드 결제
+* #### 비밀번호 암호화 - Bcrypt
+* #### AI 추천 컨텐츠 - OpenAI
+* #### 영상 시청 중단점 프로그레스 바
+* #### 영상 찜하기
+* #### 영상 좋아요
+* #### 매출 페이지 chart.js 표현
+* #### 키보드 입력 동시 검색기능
+* #### AWS S3 스토리지 서버 구축
+<br>
+<br>
+
 
 # 👉 핵심 시나리오 시연
 ### 🔹브랜드 아이템 등록
