@@ -153,29 +153,32 @@ dependencies {
 
 
 # 👉 핵심 시나리오 시연
-### 🔹브랜드 아이템 등록
+### 🔹영상 등록 => 인코딩 서버로 비동기로 전송
 
-![브랜드 아이템 등록](https://github.com/chugue/ropa-admin/assets/30003848/acd9e3df-5eee-44b7-b831-b508baeef10d)
-
-<br>
-
-### 🔹 목록 보기
-![홈 목록보기](https://github.com/chugue/ropa-admin/assets/30003848/dd09bfc5-c139-400c-a23e-13713717d937)
+![영상등록](https://github.com/chugue/project-ohflix/assets/30003848/d5448404-c8e2-4aba-a5ff-a90a42c91c7e)
 
 <br>
 
-### 🔹 아이템 상세보기
-![녹화_2024_05_24_10_57_37_548](https://github.com/chugue/ropa-admin/assets/30003848/6ce1593a-a75f-40c7-87de-4216d558b71a)
+### 🔹 사용자 회원가입 => 구독결제하지 않아도 메인페이지 접속 가능
+![사용자 회원가입](https://github.com/chugue/project-ohflix/assets/30003848/117ce445-d963-4497-ba00-0b7fb0dcd359)
 
 <br>
 
-### 🔹 장바구니 추가
-![녹화_2024_05_24_10_59_38_776](https://github.com/chugue/ropa-admin/assets/30003848/dcb75176-c179-43e4-9536-f1fdb0408040)
+### 🔹 카카오 OAuth => 회원정보가 없으면 자동가입, 있으면 자동로그인
+![카카오 OAuth](https://github.com/chugue/project-ohflix/assets/30003848/55441b35-945f-4f25-b738-08ec40e9ed7a)
+
 
 <br>
 
-### 🔹 배송지 입력 / 결제
-![녹화_2024_05_24_11_01_15_270](https://github.com/chugue/ropa-admin/assets/30003848/6eacc1fe-a391-450d-8efd-3f30a64faa83)
+### 🔹 아엠포트 카드 결제
+![아엠포트 카드결제](https://github.com/chugue/project-ohflix/assets/30003848/17f5c302-c4fe-4c55-a69c-6ec644f34a8e)
+
+
+<br>
+
+### 🔹 카카오 페이 결제
+![카카오 페이 결제](https://github.com/chugue/project-ohflix/assets/30003848/33218062-1e59-4194-9686-efda654e8160)
+
 
 <br>
 
