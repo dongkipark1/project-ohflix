@@ -65,8 +65,12 @@
                             <td>{{index}}</td>
                             <td>{{username}}</td>
                             <td>{{formattedCreatedAt}}</td>
-                            <td>{{#isSubscribe}}<i class="fa-solid fa-fire red"></i>{{/isSubscribe}}{{^isSubscribe}}
-                                <i class="fa-solid fa-fire gray"></i>{{/isSubscribe}}</td>
+                            <td>{{#isSubscribe}}
+                                <i class="fa-solid fa-fire red"></i>
+                                {{/isSubscribe}}
+                                {{^isSubscribe}}
+                                <i class="fa-solid fa-fire gray"></i>
+                                {{/isSubscribe}}</td>
                             <td>{{monthsSubscribed}}</td>
                         </tr>
                     {{/members}}

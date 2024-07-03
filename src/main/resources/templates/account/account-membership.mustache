@@ -94,7 +94,7 @@
                             </div>
                         </div>
                     </a>
-                    <a href="/api/cancel-plan">
+                    <a href="#" onclick="cancelMembership()">
                         <div class="main-right-div3 mb-20 pointer">
                             <div class="membership-cancel m-5">
                                 멤버십 해지
@@ -129,6 +129,16 @@
     {{> /_components/white-footer}}
     <!-- footer end -->
 {{/AccountMembershipDTO}}
+
+<script>
+    function cancelMembership() {
+        if (confirm('멤버십 해지를 하시겠습니까?')) {
+            window.location.href = '/api/cancel-plan';
+        }else {
+            window.location.href = '/api/account-membership';
+        }
+    }
+</script>
 </body>
 
 </html>
