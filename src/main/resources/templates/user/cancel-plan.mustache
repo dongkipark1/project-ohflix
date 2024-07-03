@@ -42,7 +42,7 @@
                         <div class="membership-date">
                             <p>멤버십 시작 : {{oldestServicePeriod}}</p>
                         </div>
-                        <a href="/" class="black-btn">해지 하기</a>
+                        <button class="black-btn" onclick="confirmCancellation()">해지 하기</button>
                         <p>멤버십을 해지하면 맞춤형 추천작을 시청할 수 없게 됩니다.</p>
                     </div>
                     <div class="card">
@@ -98,6 +98,136 @@
         </div>
     </footer>
 {{/CancelPlanPageDTO}}
+
+
+해지가 완료되면 /api/main-page로 리다이렉트 되도록 JavaScript 코드를 수정해야 합니다. 다음은 수정된 코드를 포함한 전체 HTML입니다.
+
+html
+코드 복사
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>멤버십 해지</title>
+    <!-- google Icon -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/reset.css">
+    <link rel="stylesheet" href="/static/css/cancelplan.css"/>
+    <!-- 파비콘 ( 아이콘 ) -->
+    <link rel="icon" href="/static/images/OH!.ico">
+</head>
+
+<body>
+{{#CancelPlanPageDTO}}
+    <header>
+        <div class="header-content">
+            <a href="/api/main-page"><img src="/static/images/OH!FLIX.png" alt="OH!FLIX Logo" class="logo"></a>
+            <div class="profile">
+                <img src={{profileIconPath}} alt="Profile Icon" class="profile-icon">
+                <div class="logout">
+                    <a href="/logout">로그아웃</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="cancel-plan-container">
+            <a href="/api/account-view" class="back-btn">
+                <span class="material-icons">arrow_back계정페이지로 돌아가기</span>
+            </a>
+            <div class="top">
+                <h1>클릭 한 번으로 멤버십을 해지 또는 변경하세요</h1>
+                <p>어떤 선택을 하시든 <b>{{latestServicePeriod}}</b> 부터 효력이 발생합니다. 그때까지는 계속 시청하실 수 있습니다.</p>
+            </div>
+            <div class="main">
+                <div class="card-container">
+                    <!-- Repeat this block for each card -->
+                    <div class="card">
+                        <div class="membership-date">
+                            <p>멤버십 시작 : {{oldestServicePeriod}}</p>
+                        </div>
+                        <button class="black-btn" onclick="confirmCancellation()">해지 하기</button>
+                        <p>멤버십을 해지하면 맞춤형 추천작을 시청할 수 없게 됩니다.</p>
+                    </div>
+                    <div class="card">
+                        <p>오플릭스를 계속 이용하시겠습니까?</p>
+                        <p>회원님의 현 멤버십은 그대로 유지됩니다.</p>
+                        <a href="/api/main-page" class="gray-btn">다시 계속 시청하기</a>
+                    </div>
+                </div>
+                <div class="card-container">
+                    <div class="card">
+                        <p>떠나기 전에 다음 콘텐츠를 시청해 보세요</p>
+                        <div class="item-list">
+                            {{#latestContentList}}
+                                <div class="item">
+                                    <img src={{posterPhoto}} alt="">
+                                </div>
+                            {{/latestContentList}}
+                        </div>
+                        <a href="/api/main-page" class="gray-btn">더 살펴보기</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+    <hr>
+    <footer>
+        <div class="footer-links">
+            <p class="footer-subtitle">질문이 있으신가요? 고객 센터에 문의하세요.</p>
+            <a href="#">음성 및 자막</a>
+            <a href="#">고객 센터</a>
+            <a href="#">기프트카드</a>
+            <a href="#">투자 정보(IR)</a>
+            <a href="#">미디어 센터</a>
+            <a href="#">입사 정보</a>
+            <a href="#">쿠키 설정</a>
+            <a href="#">이용 약관</a>
+            <a href="#">개인정보 처리방침</a>
+        </div>
+        <div class="service-code">
+            <p>서비스 코드</p>
+        </div>
+        <div class="service-code-content">
+            <p>오플릭스서비시스코리아 유한회사 통신판매업신고번호:
+                제2023-부산진구-0703호 전화번호: 000-111-2222 (수신자 부담)</p>
+            <p>대표: 스티븐 성훈 킴</p>
+            <p>이메일 주소: korea@ohflix.com</p>
+            <p>주소: 대한민국 부산광역시 부산진구 중앙대로 749 범향빌딩 3층
+                우편번호 03161</p>
+            <p>사업자등록번호: 000-111-2222</p>
+            <p>클라우드 호스팅: Amazon Web Services Inc.</p>
+            <p>공정거래위원회 웹사이트</p>
+        </div>
+    </footer>
+{{/CancelPlanPageDTO}}
+
+<script>
+    function confirmCancellation() {
+        if (confirm('멤버십 해지를 하시겠습니까?')) {
+            fetch('/api/cancel-plan', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            window.location.href = '/api/main-page';
+                        } else {
+                            alert('멤버십 해지에 실패했습니다.');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+        }
+    }
+</script>
 </body>
 
 </html>

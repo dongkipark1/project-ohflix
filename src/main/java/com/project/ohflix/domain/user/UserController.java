@@ -13,10 +13,14 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.filters.SessionInitializerFilter;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
 
 @RequiredArgsConstructor
 @Controller
@@ -100,6 +104,19 @@ public class UserController {
         UserResponse.AccountMembershipDTO respDTO = userService.accountMembership(sessionUser.getId());
         request.setAttribute("AccountMembershipDTO", respDTO);
         return "account/account-membership";
+    }
+
+
+    @PostMapping("/api/cancel-plan")
+    @ResponseBody
+    public ResponseEntity<?> cancelPlan() {
+        try {
+            SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
+            userService.cancelMembership(sessionUser.getId());
+            return ResponseEntity.ok(Collections.singletonMap("success", true));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("success", false));
+        }
     }
 
 

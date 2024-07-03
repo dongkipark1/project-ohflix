@@ -406,6 +406,15 @@ public class UserService {
         return new UserResponse.IsSubscribed(user);
 
     }
+
+    @Transactional
+    public void cancelMembership(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new Exception404("사용자를 찾을 수 없습니다."));
+
+        user.setSubscribe(false);
+        userRepository.save(user);
+    }
 }
 
 
