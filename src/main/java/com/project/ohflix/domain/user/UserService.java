@@ -286,6 +286,56 @@ public class UserService {
         return respDTO;
     }
 
+
+    // sales-page
+    public List<UserResponse.SalesPageDTO> salesPage2() {
+        String startDate = Year.now().toString() + "-01-01";
+        String currentDate = LocalDateTime.now().toString();
+
+        List<UserResponse.SalesPageUserDTO> userStats = userNativeRepository.findMonthlyUserStats(startDate, currentDate);
+        List<UserResponse.SalesPageSubscribeUserDTO> subscribeUserStats = userNativeRepository.findSubscribeUserStats(startDate, currentDate);
+        List<PurchaseHistoryResponse.SalesPageSalesDTO> saleStats = purchaseHistoryNativeRepository.findMonthlySalesStats(startDate, currentDate);
+
+
+        Map<String, UserResponse.SalesPageUserDTO> userStatsMap = userStats.stream()
+                .collect(Collectors.toMap(UserResponse.SalesPageUserDTO::getYearMonth, stat -> stat));
+        Map<String, UserResponse.SalesPageSubscribeUserDTO> subscribeUserStatsMap = subscribeUserStats.stream()
+                .collect(Collectors.toMap(UserResponse.SalesPageSubscribeUserDTO::getYearMonth, stat -> stat));
+        Map<String, PurchaseHistoryResponse.SalesPageSalesDTO> saleStatsMap = saleStats.stream()
+                .collect(Collectors.toMap(PurchaseHistoryResponse.SalesPageSalesDTO::getYearMonth, stat -> stat));
+
+
+        List<UserResponse.SalesPageDTO> respDTO = new ArrayList<>();
+        YearMonth startMonth = YearMonth.of(2024, 1);
+        YearMonth endMonth = YearMonth.now(); // 현재 월 까지만 표시
+
+        long cumulativeSales = 0;
+        long cumulativeUserCount = 0;
+
+        for (YearMonth month = startMonth; !month.isAfter(endMonth); month = month.plusMonths(1)) {
+            String monthString = month.toString();
+            UserResponse.SalesPageUserDTO userStat = userStatsMap.getOrDefault(monthString, new UserResponse.SalesPageUserDTO(monthString, 0L, 0L));
+            UserResponse.SalesPageSubscribeUserDTO subScribeUserStat = subscribeUserStatsMap.getOrDefault(monthString, new UserResponse.SalesPageSubscribeUserDTO(monthString, 0L));
+            PurchaseHistoryResponse.SalesPageSalesDTO saleStat = saleStatsMap.getOrDefault(monthString, new PurchaseHistoryResponse.SalesPageSalesDTO(monthString, 0L));
+
+            cumulativeUserCount += userStat.getMonthlyUserCount();
+            cumulativeSales += saleStat.getMonthlySales();
+
+
+            UserResponse.SalesPageDTO combinedStat = new UserResponse.SalesPageDTO(
+                    monthString,
+                    subScribeUserStat.getSubscribeUserCount(),
+                    cumulativeUserCount,
+                    saleStat.getMonthlySales(),
+                    cumulativeSales
+            );
+
+            respDTO.add(combinedStat);
+        }
+
+        return respDTO;
+    }
+
     // 환불 요청 생성
     @Transactional
     public void requestRefund(RefundRequest.RequestDTO reqDTO) {
