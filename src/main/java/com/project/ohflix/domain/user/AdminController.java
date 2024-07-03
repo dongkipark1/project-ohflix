@@ -35,7 +35,9 @@ public class AdminController {
     @GetMapping("/admin/sales-page")
     public String getSales(HttpServletRequest request) {
         List<UserResponse.SalesPageDTO> respDTO = userService.salesPage();
+        List<UserResponse.SalesPageDTO> respDTO2 = userService.salesPage2();
         request.setAttribute("SalesPageDTO", respDTO);
+        request.setAttribute("SalesPageDTO2", respDTO2);
         return "admin/sales-page";
     }
 
