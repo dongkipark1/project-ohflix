@@ -226,10 +226,10 @@ public class UserService {
         User user = userRepository.findUsernameAndIcon(sessionUserId).orElseThrow(() -> new Exception404("사용자 정보를 찾을 수 없습니다."));
 
         // 결제 내역 찾기
-        PurchaseHistory purchaseHistory = purchaseHistoryRepository.findById(sessionUserId).orElseThrow(() -> new Exception404("사용자 정보를 찾을 수 없습니다."));
+        PurchaseHistory purchaseHistory = purchaseHistoryRepository.findById(sessionUserId).orElse(null);
 
         // 카드 정보 찾기
-        CardInfo cardInfo = cardInfoRepository.findUserInfo(sessionUserId).orElseThrow(() -> new Exception404("사용자 정보를 찾을 수 없습니다."));
+        CardInfo cardInfo = cardInfoRepository.findUserInfo(sessionUserId).orElse(null);
 
         return new UserResponse.AccountMembershipDTO(user, purchaseHistory, cardInfo);
     }
@@ -254,7 +254,7 @@ public class UserService {
 
         List<UserResponse.SalesPageDTO> respDTO = new ArrayList<>();
         YearMonth startMonth = YearMonth.of(2024, 1);
-        YearMonth endMonth = YearMonth.of(2024, 12);
+        YearMonth endMonth = YearMonth.now(); // 현재 월 까지만 표시
 
         long cumulativeSales = 0;
         long cumulativeUserCount = 0;
@@ -280,6 +280,8 @@ public class UserService {
             respDTO.add(combinedStat);
         }
 
+        // respDTO를 yearMonth를 기준으로 내림차순 정렬
+        respDTO.sort((dto1, dto2) -> YearMonth.parse(dto2.getYearMonth()).compareTo(YearMonth.parse(dto1.getYearMonth())));
 
         return respDTO;
     }
@@ -379,6 +381,7 @@ public class UserService {
         user.updatePassword(reqDTO);
 
     }
+
     // 비밀번호 변경 페이지
     public UserResponse.PasswordChangePageDTO passwordChangePage(Integer sessionUserId) {
         User user = userRepository.findById(sessionUserId)
@@ -393,6 +396,15 @@ public class UserService {
                 .orElseThrow(() -> new Exception404("사용자를 찾을 수 없습니다."));
 
         return new UserResponse.RefundRequestPageDTO(user);
+    }
+
+    // 사용자 구독 여부 체크
+    public UserResponse.IsSubscribed checkSubscription(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new Exception404("사용자를 찾을 수 없습니다."));
+
+        return new UserResponse.IsSubscribed(user);
+
     }
 }
 

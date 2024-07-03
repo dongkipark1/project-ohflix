@@ -264,8 +264,16 @@ public class UserResponse {
             this.userId = user.getId();
             this.profileIconId = user.getProfileIcon().getId();
             this.profileIconPath = user.getProfileIcon().getPath();
-            this.servicePeriod = extractEndDate(purchaseHistory.getServicePeriod());
-            this.lastDigit = cardInfo.getLastDigit();
+            if (purchaseHistory != null) {
+                this.servicePeriod = extractEndDate(purchaseHistory.getServicePeriod());
+            } else {
+                this.servicePeriod = "";
+            }
+            if (cardInfo != null) {
+                this.lastDigit = cardInfo.getLastDigit();
+            } else {
+                this.lastDigit = "";
+            }
         }
 
     }
@@ -335,6 +343,15 @@ public class UserResponse {
             this.password = user.getPassword();
             this.nickname = user.getNickname();
             this.status = user.getStatus();
+        }
+    }
+
+    @Data
+    public static class IsSubscribed {
+        private Boolean isSubscribed;
+
+        public IsSubscribed(User user) {
+            this.isSubscribed = user.getIsSubscribe();
         }
     }
 }

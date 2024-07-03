@@ -12,6 +12,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserApiController {
     private final UserService userService;
 
+    // 구독 여부체크
+    @GetMapping("/api/check-subscription")
+    public ResponseEntity<?> checkSubscription(HttpSession session) {
+        SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
+        SessionUser sessionAdmin = (SessionUser) session.getAttribute("sessionAdmin");
+        Integer userId = null;
+        if (sessionAdmin != null) {
+            userId = sessionAdmin.getId();
+        }
+        if (sessionUser != null) {
+            userId = sessionUser.getId();
+        }
+        UserResponse.IsSubscribed respDTO = userService.checkSubscription(userId);
+        return ResponseEntity.ok(new ApiUtil<>(respDTO));
+    }
+
     // 시청제한 페이지에서 사용자의 관람등급 설정 가져오기
     @GetMapping("/api/user-restriction-info")
     public ResponseEntity<?> getUserRestrictionInfo(HttpSession session){
