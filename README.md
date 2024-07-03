@@ -2,7 +2,7 @@
 
 
 <p align="center">
-  <img src="https://github.com/chugue/ropa-admin/assets/30003848/70af4146-2333-412b-b2fd-8eb1be45f8e7"  style="width: 50%; height: auto;"/>
+  <img src="https://github.com/chugue/project-ohflix/assets/30003848/3ba28c1a-6ab4-444a-8832-e07f103bfe85)"  style="width: 50%; height: auto;"/>
 </p>
 
 
@@ -14,10 +14,10 @@
 
 <br>
 
-# 👉 배포 주소
+# 👉 깃허브 주소
   
-> #### 백엔드 서버 : [https://github.com/chugue/ropa-admin](https://github.com/chugue/ropa-admin)](https://github.com/chugue/project-ohflix)<br>
-> #### 영상 서버     : [https://github.com/chugue/ropa-flutter-project](https://github.com/chugue/ropa-flutter-project)](https://github.com/chugue/video-server)<br>
+> #### 애플리케이션 서버          : [https://github.com/chugue/ropa-admin](https://github.com/chugue/ropa-admin)<br>
+> #### 인코딩 / 라이센스 서버     : [https://github.com/chugue/ropa-flutter-project](https://github.com/chugue/ropa-flutter-project)<br>
 <br>
 
 # 👉 개발팀 소개
@@ -27,23 +27,23 @@
   <tr>
     <th style="text-align:center;">김성훈(팀장)</th>
     <th style="text-align:center;">박동기</th>
-    <th style="text-align:center;">공지영</th>
     <th style="text-align:center;">양승호</th>
+    <th style="text-align:center;">공지영</th>
     <th style="text-align:center;">최윤정</th>
   </tr>
   <tr>
     <td style="text-align:center; vertical-align:middle;"><img width="160px" src="https://avatars.githubusercontent.com/u/30003848?v=4" /></td>
-    <td style="text-align:center; vertical-align:middle;"><img width="160px" src="https://avatars.githubusercontent.com/u/153582123?v=4" /></td>
+    <td style="text-align:center; vertical-align:middle;"><img width="160px" src="https://avatars.githubusercontent.com/u/153582240?v=4" /></td>
     <td style="text-align:center; vertical-align:middle;"><img width="160px" src="https://avatars.githubusercontent.com/u/97007464?v=4"/></td>
-    <td style="text-align:center; vertical-align:middle;"><img width="160px" src="https://avatars.githubusercontent.com/u/81667935?v=4" /></td>
-    <td style="text-align:center; vertical-align:middle;"><img width="160px" src="https://avatars.githubusercontent.com/u/153582360?v=4" /></td>
+    <td style="text-align:center; vertical-align:middle;"><img width="160px" src="https://avatars.githubusercontent.com/u/52162820?v=4" /></td>
+    <td style="text-align:center; vertical-align:middle;"><img width="160px" src="https://avatars.githubusercontent.com/u/129649095?v=4" /></td>
   </tr>
   <tr>
     <td style="text-align:center; vertical-align:middle;"><a href="https://github.com/chugue">@chugue</a></td>
-    <td style="text-align:center; vertical-align:middle;"><a href="https://github.com/kjh5848">@kjh5848</a></td>
+    <td style="text-align:center; vertical-align:middle;"><a href="https://github.com/dongkipark1">@dongkipark1</a></td>
     <td style="text-align:center; vertical-align:middle;"><a href="https://github.com/LifeIsOne">@LifeIsOne</a></td>
-    <td style="text-align:center; vertical-align:middle;"><a href="https://github.com/tkffkels93">@tkffkels93</a></td>
-    <td style="text-align:center; vertical-align:middle;"><a href="https://github.com/p4rksk">@p4rksk</a></td>
+    <td style="text-align:center; vertical-align:middle;"><a href="https://github.com/Kongjiyoung">@Kongjiyoung</a></td>
+    <td style="text-align:center; vertical-align:middle;"><a href="https://github.com/yunchocopie">@yunchocopie</a></td>
   </tr>
 </table>
 
@@ -51,12 +51,10 @@
 <br>
 
 # 👉프로젝트 소개 (핵심로직 설명)
-> #### 로파는 의류를 판매하는 쇼핑몰 앱입니다.
-> #### 브랜드는 로파 플랫폼에 입점을 하여서 상품을 등록하고
-> #### 개성있는 크리에이터들은 자신의 코디를 자랑하며 보다 활용성 있게 브랜드 제품을 홍보하고,
-> #### 사용자는 맘에 드는 코디를 발견하면 해당 아이템을 바로 구매 할 수 있습니다.
-> #### 코디를 통해 판매된 제품은 해당 브랜드가 크리에이터와 플랫폼에게 수수료를 지불합니다.
-> #### 때문에 브랜드는 홍보비를 아낄 수 있고, 크리에이터에겐 자신의 표현과 수익을 얻을 수 있는 `환경을` 제공합니다.
+> #### 오플릭스는 영상 스트리밍 서비스를 제공하는 플랫폼입니다.
+> #### 사용자는 서비스를 구독하고, 오플릭스는 사용자에게 암호화된
+> #### 영상을 DASH 프로토콜로 네트워크 상황에 따라 품질을 다르게 전송하여
+> #### 끊김이 없는 영상 서비스를 제공합니다.
 
 
 <div style="display: grid; grid-template-columns: 1fr; gap: 10px;">
