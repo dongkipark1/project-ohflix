@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/reset.css"/>
+    <link rel="stylesheet" href="/static/css/admin-upload.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <!-- 파비콘 ( 아이콘 ) -->
+    <link rel="icon" href="/static/images/OH!.ico">
+    <title>관리자 페이지 - 영상 업로드</title>
+</head>
+
+<body>
+<!-- nav start -->
+<nav>
+    <div class="nav-div">
+        <div>
+            <a href="/api/main-page">
+                <img src="/static/images/OH!FLIX.png" alt="오류" class="nav-logo"/>
+            </a>
+        </div>
+        <div class="logout">
+            <a href="/logout">로그아웃</a>
+        </div>
+    </div>
+</nav>
+<!-- nav end-->
+
+<!-- ------------------------------------------------------------------------------------------------ -->
+
+<!-- main start -->
+<main>
+    <div class="main-div">
+        <!-- 사이드 바 메뉴 -->
+        {{> /_components/admin-sidebar}}
+
+        <div class="main-section">
+            <div class="main-div-2">
+                <!-- membership inforamtion -->
+                <div class="main-right-header mb-20">영화 등록하기</div>
+
+                <!-- 영상 업로드 -->
+                <div class="mb-20">영상</div>
+                <div class="main-right-div1 mb-20">
+                    <div class="membership-deco ml-20"></div>
+
+                    <div class="membership-box m-20 pointer">
+
+
+                        <div class="mb-20 fast-link-div pointer">
+                            <div>
+                                <span class="file-name1 file-name" id="file-name1">{{contentDetailDTO.videoPath}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- 이미지 업로드 -->
+
+
+                <div class="mb-20">이미지</div>
+                <div class="main-right-div1 mb-20">
+                    <div class="membership-deco ml-20"></div>
+
+                    <div class="membership-box m-20 pointer">
+
+
+                        <div class="mb-20 fast-link-div pointer">
+                            <div>
+
+                                <span class="file-name2 file-name" id="file-name2">썸네일 : {{contentDetailDTO.thumbnail}}</span>
+                            </div>
+                            <!--썸네일 미리보기-->
+                                <img id="preview-img1" src="{{contentDetailDTO.thumbnail}}" alt="썸네일 미리보기 이미지" style="display: none;"/>
+
+                        </div>
+                        <!-- TODO : 이부분 지워하는데 막으면 영상업로드가 안됨-->
+                        <div class="mb-20 fast-link-div pointer" style="display: none;">
+                            <div>
+
+                                <span class="file-name3 file-name" id="file-name3">대표 텍스트 사진 : {{contentDetailDTO.textPhoto}}</span>
+                            </div>
+                            <!--대표 텍스트 사진 미리보기-->
+                                <img id="preview-img2" src="{{contentDetailDTO.textPhoto}}" alt="미리보기 이미지" style="display: none;"/>
+                        </div>
+
+                        <hr class="mb-20">
+                        <div class="mb-20 fast-link-div pointer">
+                            <div>
+                                <span class="file-name4 file-name" id="file-name4">대표 사진 (가로사이즈) : {{contentDetailDTO.mainPhoto}}</span>
+                            </div>
+                            <!--대표 사진 미리보기-->
+                                <img id="preview-img3" src="{{contentDetailDTO.mainPhoto}}" alt="미리보기 이미지" style="display: none;"/>
+                        </div>
+                        <hr class="mb-20">
+                        <div class="mb-20 fast-link-div pointer">
+                            <div>
+                                <span class="file-name5 file-name" id="file-name5">포스터 사진 : {{contentDetailDTO.posterPhoto}}</span>
+                            </div>
+                            <!--포스터 사진 미리보기-->
+                                <img id="preview-img4" src="{{contentDetailDTO.posterPhoto}}" alt="미리보기 이미지" style="display: none;"/>
+
+                        </div>
+
+                        <hr class="mb-20">
+                        <div class="mb-20 fast-link-div pointer">
+                            <div>
+                                <span class="file-name6 file-name" id="file-name6">대표 텍스트 사진 선택하기  : {{contentDetailDTO.textPhoto}}</span>
+                            </div>
+                            <!--대표 텍스트 사진 미리보기-->
+                                <img id="preview-img5" src="{{contentDetailDTO.textPhoto}}" alt="미리보기 이미지" style="display: none;"/>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                <!-- fast link -->
+                <div class="mb-20">영화 상세 정보</div>
+                <div class="main-right-div2 mb-20">
+                    <div class="fast-link ml-20 mr-20">
+                        <table class="movie-info-table">
+                            <tr>
+                                <td>영 화 제 목</td>
+                                <td><input  class="movie-info" value="{{contentDetailDTO.title}}" disabled></td>
+                            </tr>
+                            <tr>
+                                <td>제 작 년 도</td>
+                                <td><input class="movie-info" value="{{contentDetailDTO.productYear}}" disabled></td>
+
+                            </tr>
+                            <tr>
+                                <td>상 영 시 간</td>
+                                <td><input class="movie-info" value="{{contentDetailDTO.playTime}}" disabled></td>
+                            </tr>
+                            <tr>
+                                <td>관 람 등 급</td>
+                                <td>
+                                    <input class="movie-info" value="{{contentDetailDTO.rate}}" disabled>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>장 르</td>
+                                <td>
+                                    <input type="text"  class="movie-info" value="{{contentDetailDTO.genre}}" disabled>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>감 독</td>
+                                <td><input type="text" class="movie-info" value="{{contentDetailDTO.director}}" disabled></td>
+                            </tr>
+                            <tr>
+                                <td>주 연 배 우</td>
+                                <td><input type="text" name="actors" class="movie-info" value="{{contentDetailDTO.actors}}" disabled></td>
+                            </tr>
+                            <tr>
+                                <td>각 본</td>
+                                <td><input type="text" name="writers" class="movie-info" value="{{contentDetailDTO.writers}}" disabled></td>
+                            </tr>
+                            <tr>
+                                <td>연 출</td>
+                                <td><input type="text" name="subDirector" class="movie-info" value=""></td>
+                            </tr>
+                            <tr>
+                                <td>특 징</td>
+                                <td><input type="text" name="characteristic" class="movie-info" value="{{contentDetailDTO.characteristic}}" disabled></td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: middle; padding-bottom: 5px;">소 개</td>
+                                <td><textarea name="introduction" id="info" class="movie-info"
+                                              style="height: 100px;" disabled>{{contentDetailDTO.introduction}}</textarea></td>
+                            </tr>
+
+                        </table>
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>
+<!-- main end-->
+
+<!-- ------------------------------------------------------------------------------------------------ -->
+
+<!-- hr -->
+<div class="mt-70">
+    <hr/>
+</div>
+<!-- hr -->
+
+<!-- ------------------------------------------------------------------------------------------------ -->
+
+<!-- footer start -->
+<footer>
+    <div>
+        <p>
+            넷플릭스서비시스코리아 유한회사 통신판매업신고번호:
+            제2018-서울종로-0426호 전화번호: 00-308-321-0161 (수신자 부담)
+        </p>
+        <p>대표: 레지널드 숀 톰프슨</p>
+        <p>이메일 주소: korea@netflix.com</p>
+        <p>
+            주소: 대한민국 서울특별시 종로구 우정국로 26, 센트로폴리스 A동 20층
+            우편번호 03161
+        </p>
+        <p>사업자등록번호: 165-87-00119</p>
+        <p>클라우드 호스팅: Amazon Web Services Inc.</p>
+        <p>공정거래위원회 웹사이트</p>
+    </div>
+</footer>
+<!-- footer end -->
+
+<!-- 자바 스크립트 -->
+<script src="/static/js/admin-upload.js"></script>
+
+</body>
+
+</html>

@@ -87,4 +87,18 @@ public class ContentController {
         return ResponseEntity.ok().body(new ContentRequest.VideoProgressDTO(filename, playedTime));
     }
 
+    @GetMapping ("/admin/content/{id}")
+    public String getContentDetail(@PathVariable("id") Integer id, HttpServletRequest request) {
+        ContentResponse.ContentDetailDTO responseDTO=contentService.getContentDetail(id);
+
+        request.setAttribute("contentDetailDTO", responseDTO);
+        return "/content/content-detail";
+    }
+
+    @PostMapping ("/admin/content/{id}")
+    public String deleteContent(@PathVariable Integer id) {
+
+        return "redirect:/api/video-manage";
+    }
+
 }

@@ -7,6 +7,7 @@ import com.project.ohflix.domain._enums.Rate;
 import com.project.ohflix.domain._enums.Top10Enum;
 import com.project.ohflix.domain.profileIcon.ProfileIcon;
 import com.project.ohflix.domain.user.User;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.sql.Timestamp;
@@ -28,7 +29,7 @@ public class ContentResponse {
         private List<Navbar> navbarList;
 
         public MainPageDTO(User user, Content mainContent, List<Content> top10List, List<Content> newList, List<Content> navbarItemsList) {
-            this.profileIcon =  user.getProfileIcon();
+            this.profileIcon = user.getProfileIcon();
             this.mainContent = new MainContent(mainContent);
             // Top10 list mapping with rankPath assignment
             List<Top10> sortedTop10List = top10List.stream()
@@ -282,8 +283,9 @@ public class ContentResponse {
             }
         }
     }
+
     @Data
-    public static class LatestContentDTO{
+    public static class LatestContentDTO {
         private ProfileIcon profileIcon;
         private List<LatestContentList> latestContentList;
 
@@ -307,7 +309,6 @@ public class ContentResponse {
             }
         }
     }
-
 
 
     @Data
@@ -336,5 +337,55 @@ public class ContentResponse {
         }
     }
 
-}
+    public static class ContentDetailDTO {
 
+        private String title; // 제목
+
+
+        private String thumbnail; // 썸네일
+
+        private String videoPath;
+
+        private String mainPhoto; // 대표 사진 (가로사이즈)
+
+        private String posterPhoto; // 포스터 사진 (세로사이즈 포스터 형식 작은거, top10메뉴에 쓰임)
+
+        private String textPhoto; // 대표 텍스트 사진
+
+        private String director; // 감독 이름
+
+        private String introduction; // 영화 소개
+
+        private String characteristic; // 영화 특징
+
+        private String playTime; // 재생 시간
+
+        private String productYear; // 제작 연도
+
+        private String writers; // 각본
+
+        private String actors; // 배우
+
+        private String rate; // 관람 등급 [ PG(청소년 등급), R(성인 등급), ALL(모든 시청자 등급) ]
+
+        private String genre; // 장르 [ANIME, ACTION, COMEDY, ROMANCE, THRILLER, HORROR, SF, FANTASY, DOCUMENTARY]
+
+        public ContentDetailDTO(Content content) {
+            this.title = content.getTitle();
+            this.thumbnail = content.getThumbnail();
+            this.videoPath = content.getVideoPath();
+            this.mainPhoto = content.getMainPhoto();
+            this.posterPhoto = content.getPosterPhoto();
+            this.textPhoto = content.getTextPhoto();
+            this.director = content.getDirector();
+            this.introduction = content.getIntroduction();
+            this.characteristic = content.getCharacteristic();
+            this.playTime = content.getPlayTime();
+            this.productYear = content.getProductYear();
+            this.writers = content.getWriters();
+            this.actors = content.getActors();
+            this.rate = String.valueOf(content.getRate());
+            this.genre = String.valueOf(content.getGenre());
+        }
+    }
+}
