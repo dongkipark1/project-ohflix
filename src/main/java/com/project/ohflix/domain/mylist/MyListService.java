@@ -178,8 +178,6 @@ public class MyListService {
             // RestTemplate 인스턴스 생성
             RestTemplate restTemplate = new RestTemplate();
 
-            System.out.println("👉👉👉👉👉👉" + openaiKey);
-
             // 헤더 설정
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
