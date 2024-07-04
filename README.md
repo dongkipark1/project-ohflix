@@ -1,5 +1,6 @@
 # 🚀 "OHFLIX" - 영상 스트리밍 플랫폼
 
+<br>
 
 <p align="center">
   <img src="https://github.com/chugue/project-ohflix/assets/30003848/3ba28c1a-6ab4-444a-8832-e07f103bfe85)"  style="width: 50%; height: auto;"/>
@@ -172,43 +173,71 @@ dependencies {
 <br>
 
 ### 🔹 사용자 회원가입 => 구독결제하지 않아도 메인페이지 접속 가능
+
 ![사용자 회원가입](https://github.com/chugue/project-ohflix/assets/30003848/117ce445-d963-4497-ba00-0b7fb0dcd359)
 
 <br>
 
 ### 🔹 카카오 OAuth => 회원정보가 없으면 자동가입, 있으면 자동로그인
+
 ![카카오 OAuth](https://github.com/chugue/project-ohflix/assets/30003848/55441b35-945f-4f25-b738-08ec40e9ed7a)
 
 
 <br>
 
 ### 🔹 아엠포트 카드 결제
+
 ![아엠포트 카드결제](https://github.com/chugue/project-ohflix/assets/30003848/17f5c302-c4fe-4c55-a69c-6ec644f34a8e)
 
 
 <br>
 
 ### 🔹 카카오 페이 결제
+
 ![카카오 페이 결제](https://github.com/chugue/project-ohflix/assets/30003848/33218062-1e59-4194-9686-efda654e8160)
 
 
-<br>
 
-### 🔹 크리에이터 지원하기 
-![녹화_2024_05_24_11_05_38_97](https://github.com/chugue/ropa-admin/assets/30003848/78555567-da40-4b26-a99a-66291fcc11d3)
-
-<br>
-
-### 🔹 크리에이터 승인하기
-![녹화_2024_05_24_11_09_41_220](https://github.com/chugue/ropa-admin/assets/30003848/f487a0fe-7ba2-4444-b6f4-915612222410)
+### 🔹 관리자 매출확인
+![매출확인](https://github.com/chugue/project-ohflix/assets/30003848/4d1d5eba-40a3-4ced-839e-490b407433a0)
 
 <br>
 
-### 🔹 크리에이터 코디 메인사진 등록하기
-![녹화_2024_05_24_11_11_54_847](https://github.com/chugue/ropa-admin/assets/30003848/a5a2596a-29bf-4d38-a36e-99c4a6a123cb)
+### 🔹 영상 보기 => 세그먼트 호출
+![영상보기](https://github.com/chugue/project-ohflix/assets/30003848/77ccd66e-4c52-431f-9e71-c6c8a3e11ba6)
 
 <br>
 
-### 🔹 크리에이터 코디에 아이템 연결하기
-![녹화_2024_05_24_11_12_24_872](https://github.com/chugue/ropa-admin/assets/30003848/71935699-78e8-4b78-a86e-4fe234dd5f20)
+### 🔹 영상 보기 => 재생 시점부터 세그먼트 호출
+![재생 시점부터 세그먼트 호출](https://github.com/chugue/project-ohflix/assets/30003848/8798943c-269a-460e-b2bb-f81257c9f3ec)
+
+<br>
+
+### 🔹 영상 보기 => 캐시데이터 호출
+![캐시 데이터 호출](https://github.com/chugue/project-ohflix/assets/30003848/f27e2407-4983-4524-a9a7-f4ffe632ed87)
+
+<br>
+
+### 🔹 영상 보기 => 최근 종료된 재생시점에서 이어보기
+![영상 이어보기](https://github.com/chugue/project-ohflix/assets/30003848/2c97922b-490a-4389-8821-bb92a3a1b644)
+
+<br>
+ 
+### 🔹 영상 찜하기
+![영상 찜하기](https://github.com/chugue/project-ohflix/assets/30003848/19553edd-8058-47a6-821d-f8790ce6a884)
+
+<br>
+ 
+### 🔹 AI추천 컨텐츠
+![AI추천 컨텐츠](https://github.com/chugue/project-ohflix/assets/30003848/3b2342e3-53ab-47a3-a4bb-b97227a1456f)
+
+<br>
+
+### 🔹 KeyUp 검색
+![KeyUp 검색](https://github.com/chugue/project-ohflix/assets/30003848/0e97ba24-32fc-44d0-892a-1b0c6cc763b1)
+
+
+<br>
+<br>
+
 
