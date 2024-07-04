@@ -17,7 +17,7 @@
 # 👉 깃허브 주소
   
 > #### 애플리케이션 서버          : [https://github.com/chugue/project-ohflix](https://github.com/chugue/project-ohflix)<br>
-> #### 인코딩 / 라이센스 서버     : [https://github.com/chugue/ropa-flutter-project](https://github.com/chugue/ropa-flutter-project)<br>
+> #### 인코딩 / 라이센스 서버     : [https://github.com/chugue/video-server](https://github.com/chugue/video-server)<br>
 <br>
 
 # 👉 개발팀 소개
