@@ -65,6 +65,16 @@
 
 
 <br>
+<br>
+
+# 👉 프로젝트 구조
+
+![프로젝트구조 1](https://github.com/chugue/project-ohflix/assets/30003848/15e36619-ed3a-4d78-9639-122ff89c0d9f)
+![프로젝트구조 2](https://github.com/chugue/project-ohflix/assets/30003848/e9a1d443-f4ab-4176-b2a9-fdb4b29dc27f)
+
+
+<br>
+<br>
 
 # 👉 오플릭스 PPT 발표자료
 [오플릭스 PPT - pdf](https://github.com/user-attachments/files/16082996/OHFLIX-PPT.pdf)
@@ -148,6 +158,8 @@ dependencies {
 * #### 매출 페이지 chart.js 표현
 * #### 키보드 입력 동시 검색기능
 * #### AWS S3 스토리지 서버 구축
+* #### 매출페이지 Chart.js 사용
+* #### 메인페이지 Swiper 사용
 <br>
 <br>
 
