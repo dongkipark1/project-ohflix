@@ -136,7 +136,7 @@ dependencies {
 
 
 # 👉 팀 블로깅  
-[팀 블로그 링크](https://www.notion.so/stephenkiim/23dafc6dac1649318bc1bc1ece61c2fd)
+[팀 블로그 링크](https://www.notion.so/stephenkiim/a382fcac61694a7297ffad6c39bd86cb)
 
 <br>
 <br>
